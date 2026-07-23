@@ -15,7 +15,7 @@ interface CrawlSource {
   url: string;
 }
 
-export async function processCrawlJob(job: Job, prisma: PrismaClient) {
+export async function processCrawlJob(job: Job<any>, prisma: PrismaClient) {
   const { sources, type } = job.data as {
     sources: readonly CrawlSource[];
     type: string;
@@ -116,7 +116,7 @@ export async function processCrawlJob(job: Job, prisma: PrismaClient) {
           continue;
         }
 
-        const data = await response.json();
+        const data = await response.json() as any;
         const embeddings = (data.data || [])
           .sort((a: any, b: any) => a.index - b.index)
           .map((d: any) => d.embedding);
@@ -183,7 +183,7 @@ async function firecrawlScrape(url: string, apiKey: string): Promise<string> {
   });
 
   if (!response.ok) return '';
-  const data = await response.json();
+  const data = await response.json() as any;
   return data.data?.markdown || '';
 }
 

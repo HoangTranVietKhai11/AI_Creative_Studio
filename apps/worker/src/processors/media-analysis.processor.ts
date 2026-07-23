@@ -8,7 +8,7 @@ import { PrismaClient } from '@prisma/client';
 import { readFileSync } from 'fs';
 import { IMAGE_ANALYSIS_PROMPT, VIDEO_ANALYSIS_PROMPT } from '@contentpilot/ai';
 
-export async function processMediaAnalysisJob(job: Job, prisma: PrismaClient) {
+export async function processMediaAnalysisJob(job: Job<any>, prisma: PrismaClient) {
   const { mediaId, type, filePath, mimeType, userId } = job.data;
 
   console.log(`🔍 Analyzing ${type}: ${mediaId}`);
@@ -93,7 +93,7 @@ async function analyzeImage(
     throw new Error(`Vision API error: ${response.status}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as any;
   const content = data.choices?.[0]?.message?.content || '';
 
   return {
@@ -141,7 +141,7 @@ async function analyzeVideo(
     throw new Error(`Video analysis API error: ${response.status}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as any;
   const content = data.choices?.[0]?.message?.content || '';
 
   return {

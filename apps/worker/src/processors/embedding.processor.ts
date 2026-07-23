@@ -9,7 +9,7 @@ import { readFileSync } from 'fs';
 import { chunkText, hashContent } from '@contentpilot/ai';
 import { v4 as uuidv4 } from 'uuid';
 
-export async function processEmbeddingJob(job: Job, prisma: PrismaClient) {
+export async function processEmbeddingJob(job: Job<any>, prisma: PrismaClient) {
   const { documentId, type, filePath, sourceUrl, rawContent } = job.data;
 
   console.log(`📄 Processing document: ${documentId} (${type})`);
@@ -87,7 +87,7 @@ export async function processEmbeddingJob(job: Job, prisma: PrismaClient) {
         throw new Error(`Embedding API error: ${response.status} — ${error}`);
       }
 
-      const data = await response.json();
+      const data = await response.json() as any;
       const embeddings = (data.data || [])
         .sort((a: any, b: any) => a.index - b.index)
         .map((d: any) => d.embedding);
@@ -196,7 +196,7 @@ async function scrapeUrl(url: string): Promise<string> {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json() as any;
         return data.data?.markdown || data.data?.content || '';
       }
     } catch (error) {
