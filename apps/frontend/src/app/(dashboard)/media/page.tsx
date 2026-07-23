@@ -73,10 +73,10 @@ export default function MediaPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold flex items-center gap-3">
           <ImageIcon className="w-7 h-7" style={{ color: '#F59E0B' }} />
-          Media Analysis
+          Phân tích Media
         </h1>
         <p className="text-sm mt-1" style={{ color: 'hsl(0 0% 55%)' }}>
-          Upload images and videos for AI-powered analysis
+          Tải lên hình ảnh và video để AI phân tích
         </p>
       </div>
 
@@ -101,19 +101,19 @@ export default function MediaPage() {
         ) : (
           <Upload className="w-12 h-12 mx-auto mb-3" style={{ color: 'hsl(0 0% 40%)' }} />
         )}
-        <p className="font-medium mb-1">{isDragActive ? 'Drop media here' : 'Upload images or videos'}</p>
-        <p className="text-sm" style={{ color: 'hsl(0 0% 45%)' }}>JPG, PNG, WebP, MP4, WebM — up to 100MB</p>
+        <p className="font-medium mb-1">{isDragActive ? 'Thả media vào đây' : 'Tải lên hình ảnh hoặc video'}</p>
+        <p className="text-sm" style={{ color: 'hsl(0 0% 45%)' }}>JPG, PNG, WebP, MP4, WebM — tối đa 100MB</p>
       </div>
 
       {/* Analysis Detail Modal */}
       {selectedMedia && selectedMedia.analysisResult && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => setSelectedMedia(null)}>
           <div className="w-full max-w-2xl max-h-[80vh] overflow-y-auto p-6 rounded-2xl" style={{ background: 'hsl(0 0% 11%)', border: '1px solid hsl(0 0% 18%)' }} onClick={e => e.stopPropagation()}>
-            <h2 className="text-lg font-bold mb-4">Analysis: {selectedMedia.filename}</h2>
+            <h2 className="text-lg font-bold mb-4">Kết quả phân tích: {selectedMedia.filename}</h2>
             <div className="markdown-content text-sm" style={{ color: 'hsl(0 0% 75%)' }}>
               <pre className="whitespace-pre-wrap">{(selectedMedia.analysisResult as any).rawAnalysis || JSON.stringify(selectedMedia.analysisResult, null, 2)}</pre>
             </div>
-            <button onClick={() => setSelectedMedia(null)} className="mt-4 px-4 py-2 rounded-lg text-sm" style={{ background: '#777777', color: 'white' }}>Close</button>
+            <button onClick={() => setSelectedMedia(null)} className="mt-4 px-4 py-2 rounded-lg text-sm" style={{ background: '#777777', color: 'white' }}>Đóng</button>
           </div>
         </motion.div>
       )}
@@ -121,7 +121,7 @@ export default function MediaPage() {
       {loading ? (
         <div className="flex items-center justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" style={{ color: '#777777' }} /></div>
       ) : media.length === 0 ? (
-        <div className="text-center py-12"><ImageIcon className="w-10 h-10 mx-auto mb-3" style={{ color: 'hsl(0 0% 30%)' }} /><p style={{ color: 'hsl(0 0% 45%)' }}>No media uploaded yet</p></div>
+        <div className="text-center py-12"><ImageIcon className="w-10 h-10 mx-auto mb-3" style={{ color: 'hsl(0 0% 30%)' }} /><p style={{ color: 'hsl(0 0% 45%)' }}>Chưa có media nào được tải lên</p></div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {media.map(item => (
@@ -137,10 +137,10 @@ export default function MediaPage() {
                 <div className="ml-auto flex items-center gap-3">
                   {item.analysisStatus === 'COMPLETED' && (
                     <button onClick={() => setSelectedMedia(item)} className="flex items-center gap-1 hover:text-indigo-400 transition-colors" style={{ color: '#777777' }}>
-                      <Eye className="w-3 h-3" /> View Analysis
+                      <Eye className="w-3 h-3" /> Xem phân tích
                     </button>
                   )}
-                  <button onClick={() => deleteMedia(item.id)} className="p-1 hover:text-red-400 transition-colors" title="Delete">
+                  <button onClick={() => deleteMedia(item.id)} className="p-1 hover:text-red-400 transition-colors" title="Xóa">
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>

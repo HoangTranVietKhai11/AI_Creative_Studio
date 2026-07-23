@@ -21,14 +21,14 @@ const defaultPrompts = [
   },
   {
     id: '3',
-    category: 'Social',
+    category: 'Mạng xã hội',
     title: 'Caption Instagram',
     prompt: 'Viết 3 phiên bản caption Instagram cho ảnh [mô tả ảnh]. Version 1: ngắn gọn ấn tượng (<50 chữ). Version 2: storytelling trung bình (100-150 chữ). Version 3: long-form có giá trị (200+ chữ). Kèm hashtag phù hợp mỗi version.',
     tags: ['Instagram', 'Caption', 'Social Media'],
   },
   {
     id: '4',
-    category: 'Ads',
+    category: 'Quảng cáo',
     title: 'Facebook Ad Copy',
     prompt: 'Viết 3 mẫu quảng cáo Facebook cho sản phẩm [tên sản phẩm] giá [giá]. Target: [đối tượng]. Mỗi mẫu có: Headline (tối đa 40 ký tự), Primary text (125 ký tự), Description. Sử dụng framework AIDA.',
     tags: ['Facebook Ads', 'Copywriting', 'AIDA'],
@@ -42,14 +42,14 @@ const defaultPrompts = [
   },
   {
     id: '6',
-    category: 'Strategy',
+    category: 'Chiến lược',
     title: 'Content Calendar 30 ngày',
     prompt: 'Lên kế hoạch content 30 ngày cho brand [ngành nghề] trên nền tảng [platform]. Mỗi tuần có chủ đề riêng. Bao gồm: loại nội dung, chủ đề cụ thể, giờ đăng phù hợp và CTA cho từng bài.',
     tags: ['Strategy', 'Calendar', 'Planning'],
   },
 ];
 
-const categories = ['Tất cả', 'Video', 'SEO', 'Social', 'Ads', 'Email', 'Strategy'];
+const categories = ['Tất cả', 'Video', 'SEO', 'Mạng xã hội', 'Quảng cáo', 'Email', 'Chiến lược'];
 
 export default function PromptsPage() {
   const [selectedCategory, setSelectedCategory] = useState('Tất cả');
@@ -192,7 +192,7 @@ export default function PromptsPage() {
                   onChange={e => setNewPrompt(p => ({ ...p, category: e.target.value }))}
                   className="w-full px-3 py-2 rounded-lg bg-surface-container-low border border-outline-variant text-on-background text-sm focus:outline-none focus:border-primary"
                 >
-                  {['Video', 'SEO', 'Social', 'Ads', 'Email', 'Strategy'].map(c => (
+                  {['Video', 'SEO', 'Mạng xã hội', 'Quảng cáo', 'Email', 'Chiến lược'].map(c => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>

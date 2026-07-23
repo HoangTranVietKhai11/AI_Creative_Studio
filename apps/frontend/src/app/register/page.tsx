@@ -24,7 +24,7 @@ export default function RegisterPage() {
       await register(email, password, name);
       router.replace('/chat');
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Unable to create your account. Please try again.');
+      setError(reason instanceof Error ? reason.message : 'Không thể tạo tài khoản. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
@@ -33,23 +33,23 @@ export default function RegisterPage() {
   return (
     <main className="auth-page">
       <div className="auth-glow auth-glow-violet" /><div className="auth-glow auth-glow-pink" />
-      <Link href="/" className="auth-back"><ArrowLeft size={16} /> Back to home</Link>
+      <Link href="/" className="auth-back"><ArrowLeft size={16} /> Về trang chủ</Link>
       <section className="auth-panel">
         <Link href="/" className="auth-brand"><span><Sparkles size={20} /></span>ContentPilot <em>AI</em></Link>
-        <header className="auth-heading"><h1>Create your workspace</h1><p>Start free and turn your ideas into better content.</p></header>
+        <header className="auth-heading"><h1>Tạo không gian làm việc của bạn</h1><p>Bắt đầu miễn phí và biến ý tưởng của bạn thành nội dung tuyệt vời.</p></header>
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="auth-error" role="alert">{error}</div>}
-          <label htmlFor="register-name">Your name</label>
-          <div className="auth-input"><UserRound size={18} /><input id="register-name" type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="How should we call you?" autoComplete="name" required /></div>
-          <label htmlFor="register-email">Email address</label>
-          <div className="auth-input"><Mail size={18} /><input id="register-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" required /></div>
-          <label htmlFor="register-password">Password</label>
-          <div className="auth-input"><LockKeyhole size={18} /><input id="register-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="At least 8 characters" autoComplete="new-password" required minLength={8} /></div>
-          <button className="auth-submit" type="submit" disabled={loading}>{loading ? <Loader2 size={18} className="animate-spin" /> : null}{loading ? 'Creating account...' : 'Create free account'}</button>
+          <label htmlFor="register-name">Tên của bạn</label>
+          <div className="auth-input"><UserRound size={18} /><input id="register-name" type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="Chúng tôi nên gọi bạn là gì?" autoComplete="name" required /></div>
+          <label htmlFor="register-email">Địa chỉ Email</label>
+          <div className="auth-input"><Mail size={18} /><input id="register-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="ban@example.com" autoComplete="email" required /></div>
+          <label htmlFor="register-password">Mật khẩu</label>
+          <div className="auth-input"><LockKeyhole size={18} /><input id="register-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ít nhất 8 ký tự" autoComplete="new-password" required minLength={8} /></div>
+          <button className="auth-submit" type="submit" disabled={loading}>{loading ? <Loader2 size={18} className="animate-spin" /> : null}{loading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản miễn phí'}</button>
         </form>
-        <div className="auth-divider"><span />or continue with<span /></div>
+        <div className="auth-divider"><span />hoặc tiếp tục với<span /></div>
         <div className="auth-providers"><a href={`${apiUrl}/api/auth/google`}>Google</a><a href={`${apiUrl}/api/auth/github`}>GitHub</a></div>
-        <p className="auth-switch">Already have an account? <Link href="/login">Sign in</Link></p>
+        <p className="auth-switch">Đã có tài khoản? <Link href="/login">Đăng nhập</Link></p>
       </section>
     </main>
   );

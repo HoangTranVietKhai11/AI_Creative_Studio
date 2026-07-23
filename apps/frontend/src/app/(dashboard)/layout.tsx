@@ -53,7 +53,7 @@ export default function DashboardLayout({
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="flex flex-col items-center gap-4">
           <span className="material-symbols-outlined text-4xl text-primary animate-pulse" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
-          <p className="text-on-surface-variant font-label-md">Loading...</p>
+          <p className="text-on-surface-variant font-label-md">Đang tải...</p>
         </div>
       </div>
     );
@@ -71,7 +71,7 @@ export default function DashboardLayout({
           </div>
           <div>
             <h1 className="font-headline-md text-headline-md font-bold text-primary truncate">ContentPilot AI</h1>
-            <p className="font-label-sm text-label-sm text-on-surface-variant">AI Workspace</p>
+            <p className="font-label-sm text-label-sm text-on-surface-variant">Không gian AI</p>
           </div>
         </div>
         <button
@@ -180,7 +180,7 @@ export default function DashboardLayout({
           {/* Left: Current page label */}
           <div className="flex items-center gap-6 h-full">
             <a className="h-full flex items-center text-on-surface-variant hover:text-primary transition-colors font-label-md" href="#">
-              Workspace
+              Không gian làm việc
             </a>
             {/* Static model indicator — non-interactive, will be upgraded later */}
             <div className="h-full flex items-center text-primary border-b-2 border-primary font-label-md">

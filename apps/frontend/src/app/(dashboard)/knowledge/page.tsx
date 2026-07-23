@@ -111,10 +111,10 @@ export default function KnowledgePage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold flex items-center gap-3">
           <BookOpen className="w-7 h-7" style={{ color: '#10B981' }} />
-          Knowledge Base
+          Kho kiến thức
         </h1>
         <p className="text-sm mt-1" style={{ color: 'hsl(0 0% 55%)' }}>
-          Upload documents and URLs to enrich AI responses with your brand context
+          Tải lên tài liệu và đường dẫn URL để AI trả lời theo đúng ngữ cảnh thương hiệu của bạn
         </p>
       </div>
 
@@ -142,10 +142,10 @@ export default function KnowledgePage() {
             <Upload className="w-10 h-10 mx-auto mb-3" style={{ color: 'hsl(0 0% 40%)' }} />
           )}
           <p className="font-medium mb-1">
-            {isDragActive ? 'Drop files here' : 'Drag & drop files'}
+            {isDragActive ? 'Thả file vào đây' : 'Kéo & thả file vào đây'}
           </p>
           <p className="text-sm" style={{ color: 'hsl(0 0% 45%)' }}>
-            PDF, DOCX, TXT, MD, CSV — up to 50MB
+            PDF, DOCX, TXT, MD, CSV — tối đa 50MB
           </p>
         </div>
 
@@ -155,7 +155,7 @@ export default function KnowledgePage() {
         >
           <div className="flex items-center gap-2 mb-3">
             <Globe className="w-5 h-5" style={{ color: '#a6a6a6' }} />
-            <h3 className="font-semibold">Scrape URL</h3>
+            <h3 className="font-semibold">Lấy dữ liệu URL</h3>
           </div>
           <div className="flex gap-2">
             <input
@@ -166,7 +166,7 @@ export default function KnowledgePage() {
               style={{ background: 'hsl(0 0% 8%)', border: '1px solid hsl(0 0% 20%)', color: 'hsl(0 0% 90%)' }}
             />
             <button onClick={handleScrape} className="px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: '#a6a6a6', color: 'white' }}>
-              Scrape
+              Lấy dữ liệu
             </button>
           </div>
         </div>
@@ -181,7 +181,7 @@ export default function KnowledgePage() {
         ) : documents.length === 0 ? (
           <div className="text-center py-12">
             <FileText className="w-10 h-10 mx-auto mb-3" style={{ color: 'hsl(0 0% 30%)' }} />
-            <p style={{ color: 'hsl(0 0% 45%)' }}>No documents yet. Upload files or scrape URLs above.</p>
+            <p style={{ color: 'hsl(0 0% 45%)' }}>Chưa có tài liệu nào. Hãy tải file lên hoặc lấy dữ liệu từ URL ở trên.</p>
           </div>
         ) : (
           documents.map((doc, i) => (
@@ -200,7 +200,7 @@ export default function KnowledgePage() {
                   <div className="flex items-center gap-3 text-xs" style={{ color: 'hsl(0 0% 45%)' }}>
                     <span>{doc.type}</span>
                     {doc.fileSize && <span>{formatSize(doc.fileSize)}</span>}
-                    {doc.chunkCount && <span>{doc.chunkCount} chunks</span>}
+                    {doc.chunkCount && <span>{doc.chunkCount} phân đoạn</span>}
                     {doc.errorMsg && <span style={{ color: '#EF4444' }}>{doc.errorMsg}</span>}
                   </div>
                 </div>

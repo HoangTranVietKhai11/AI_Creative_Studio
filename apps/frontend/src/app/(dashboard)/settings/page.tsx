@@ -50,7 +50,7 @@ export default function SettingsPage() {
     <div className="p-8 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold flex items-center gap-3 mb-8">
         <Settings className="w-7 h-7" style={{ color: '#7a7a7a' }} />
-        Settings
+        Cài đặt
       </h1>
 
       {/* Error Banner */}
@@ -63,10 +63,10 @@ export default function SettingsPage() {
 
       {/* Profile */}
       <div className="p-6 rounded-2xl mb-6" style={{ background: 'hsl(0 0% 11%)', border: '1px solid hsl(0 0% 18%)' }}>
-        <h2 className="text-lg font-semibold mb-4">Profile</h2>
+        <h2 className="text-lg font-semibold mb-4">Hồ sơ</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: 'hsl(0 0% 55%)' }}>Name</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: 'hsl(0 0% 55%)' }}>Tên</label>
             <input value={name} onChange={e => setName(e.target.value)} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ background: 'hsl(0 0% 8%)', border: '1px solid hsl(0 0% 20%)', color: 'hsl(0 0% 90%)' }} />
           </div>
           <div>
@@ -74,14 +74,14 @@ export default function SettingsPage() {
             <input value={user?.email || ''} disabled className="w-full px-3 py-2 rounded-lg text-sm" style={{ background: 'hsl(0 0% 8%)', border: '1px solid hsl(0 0% 20%)', color: 'hsl(0 0% 45%)' }} />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: 'hsl(0 0% 55%)' }}>Default AI Model</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: 'hsl(0 0% 55%)' }}>Mô hình AI mặc định</label>
             <select value={preferredModel} onChange={e => setPreferredModel(e.target.value)} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ background: 'hsl(0 0% 8%)', border: '1px solid hsl(0 0% 20%)', color: 'hsl(0 0% 90%)' }}>
               {AVAILABLE_MODELS.map(m => <option key={m.id} value={m.id}>{m.name} — {m.provider}</option>)}
             </select>
           </div>
           <button disabled={saving} onClick={saveProfile} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-60" style={{ background: '#777777', color: 'white' }}>
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-            {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Changes'}
+            {saving ? 'Đang lưu...' : saved ? 'Đã lưu!' : 'Lưu thay đổi'}
           </button>
         </div>
       </div>
@@ -90,17 +90,17 @@ export default function SettingsPage() {
       <div className="p-6 rounded-2xl" style={{ background: 'hsl(0 0% 11%)', border: '1px solid hsl(0 0% 18%)' }}>
         <div className="flex items-center gap-2 mb-4">
           <Key className="w-5 h-5" style={{ color: '#F59E0B' }} />
-          <h2 className="text-lg font-semibold">Your API Key (BYOK)</h2>
+          <h2 className="text-lg font-semibold">API Key của bạn (BYOK)</h2>
         </div>
         <p className="text-sm mb-4" style={{ color: 'hsl(0 0% 55%)' }}>
-          Bring your own OpenRouter API key to bypass platform limits.
-          Your key is encrypted at rest.
+          Sử dụng OpenRouter API key của bạn để không bị giới hạn.
+          Key của bạn sẽ được mã hóa an toàn.
         </p>
         <div className="flex gap-2">
           <input value={apiKey} onChange={e => setApiKey(e.target.value)} type="password" placeholder="sk-or-..." className="flex-1 px-3 py-2 rounded-lg text-sm outline-none" style={{ background: 'hsl(0 0% 8%)', border: '1px solid hsl(0 0% 20%)', color: 'hsl(0 0% 90%)' }} />
           <button disabled={savingKey} onClick={saveApiKey} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-60 transition-all" style={{ background: keySaved ? '#10B981' : '#F59E0B', color: keySaved ? 'white' : 'black' }}>
             {savingKey ? <Loader2 className="w-4 h-4 animate-spin" /> : keySaved ? <Check className="w-4 h-4" /> : null}
-            {savingKey ? 'Saving...' : keySaved ? 'Saved!' : 'Save Key'}
+            {savingKey ? 'Đang lưu...' : keySaved ? 'Đã lưu!' : 'Lưu Key'}
           </button>
         </div>
       </div>

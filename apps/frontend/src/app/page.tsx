@@ -9,18 +9,18 @@ import {
 import { useState } from 'react';
 
 const features = [
-  { icon: Bot, title: 'AI specialists', description: 'Purpose-built agents for ideas, scripts, SEO, campaigns, and strategy.', color: '#7a7a7a' },
-  { icon: TrendingUp, title: 'Live research', description: 'Ground your content in current conversations, topics, and search intent.', color: '#888888' },
-  { icon: PenTool, title: 'Write faster', description: 'Turn a short brief into hooks, scripts, captions, ads, and content calendars.', color: '#f59e0b' },
-  { icon: ImageIcon, title: 'Analyze media', description: 'Get practical feedback on composition, lighting, pacing, and your CTA.', color: '#22c55e' },
-  { icon: Video, title: 'Improve retention', description: 'Find weak moments and make every second of your video work harder.', color: '#7f7f7f' },
-  { icon: Layers3, title: 'Keep brand context', description: 'Use documents and URLs so every response sounds like your brand.', color: '#a6a6a6' },
+  { icon: Bot, title: 'Chuyên gia AI', description: 'Các đặc vụ AI được thiết kế riêng để lên ý tưởng, kịch bản, SEO, và chiến lược.', color: '#7a7a7a' },
+  { icon: TrendingUp, title: 'Nghiên cứu trực tiếp', description: 'Lấy dữ liệu thực tế từ các cuộc thảo luận, chủ đề và xu hướng tìm kiếm mới nhất.', color: '#888888' },
+  { icon: PenTool, title: 'Viết nhanh hơn', description: 'Biến một ý tưởng ngắn gọn thành kịch bản, lời tựa, quảng cáo và lịch nội dung.', color: '#f59e0b' },
+  { icon: ImageIcon, title: 'Phân tích hình ảnh', description: 'Nhận phản hồi thực tế về bố cục, ánh sáng, nhịp độ và lời kêu gọi hành động.', color: '#22c55e' },
+  { icon: Video, title: 'Cải thiện giữ chân', description: 'Tìm ra những khoảnh khắc yếu kém và làm cho từng giây video của bạn cuốn hút hơn.', color: '#7f7f7f' },
+  { icon: Layers3, title: 'Giữ vững văn phong', description: 'Sử dụng tài liệu và URL để AI luôn trả lời bằng đúng giọng điệu thương hiệu của bạn.', color: '#a6a6a6' },
 ];
 
 const plans = [
-  { name: 'Free', price: '$0', caption: 'For exploring the studio', items: ['50 messages each month', '5 knowledge documents', 'Core AI specialists'], href: '/register' },
-  { name: 'Pro', price: '$29', caption: 'For consistent content output', items: ['2,000 messages each month', '100 knowledge documents', 'All specialists & live research'], href: '/register', featured: true },
-  { name: 'Agency', price: '$99', caption: 'For teams and client work', items: ['10,000 messages each month', '1,000 knowledge documents', 'Team-ready AI workspace'], href: 'mailto:sales@contentpilot.ai' },
+  { name: 'Miễn phí', price: '$0', caption: 'Khám phá trải nghiệm cơ bản', items: ['50 tin nhắn mỗi tháng', '5 tài liệu kiến thức', 'Các chuyên gia AI cơ bản'], href: '/register' },
+  { name: 'Pro', price: '$29', caption: 'Dành cho việc tạo nội dung liên tục', items: ['2,000 tin nhắn mỗi tháng', '100 tài liệu kiến thức', 'Tất cả chuyên gia & nghiên cứu trực tiếp'], href: '/register', featured: true },
+  { name: 'Doanh nghiệp', price: '$99', caption: 'Dành cho đội ngũ và khách hàng', items: ['10,000 tin nhắn mỗi tháng', '1,000 tài liệu kiến thức', 'Không gian làm việc cho nhóm'], href: 'mailto:sales@contentpilot.ai' },
 ];
 
 export default function LandingPage() {
@@ -29,27 +29,27 @@ export default function LandingPage() {
   return (
     <main className="landing-shell">
       <nav className="landing-nav">
-        <Link href="/" className="brand" aria-label="ContentPilot AI home">
+        <Link href="/" className="brand" aria-label="Trang chủ ContentPilot AI">
           <span className="brand-mark"><Sparkles size={19} /></span>
           <span>ContentPilot <em>AI</em></span>
         </Link>
         <div className="landing-links">
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <Link href="/login">Sign in</Link>
-          <Link href="/register" className="button button-small">Start free <ArrowRight size={15} /></Link>
+          <a href="#features">Tính năng</a>
+          <a href="#pricing">Bảng giá</a>
+          <Link href="/login">Đăng nhập</Link>
+          <Link href="/register" className="button button-small">Bắt đầu miễn phí <ArrowRight size={15} /></Link>
         </div>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Bật tắt menu" aria-expanded={menuOpen}>
           {menuOpen ? <X size={21} /> : <Menu size={21} />}
         </button>
       </nav>
 
       {menuOpen && (
         <div className="mobile-menu">
-          <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
-          <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
-          <Link href="/login" onClick={() => setMenuOpen(false)}>Sign in</Link>
-          <Link href="/register" className="button" onClick={() => setMenuOpen(false)}>Start free <ArrowRight size={16} /></Link>
+          <a href="#features" onClick={() => setMenuOpen(false)}>Tính năng</a>
+          <a href="#pricing" onClick={() => setMenuOpen(false)}>Bảng giá</a>
+          <Link href="/login" onClick={() => setMenuOpen(false)}>Đăng nhập</Link>
+          <Link href="/register" className="button" onClick={() => setMenuOpen(false)}>Bắt đầu miễn phí <ArrowRight size={16} /></Link>
         </div>
       )}
 
@@ -57,26 +57,26 @@ export default function LandingPage() {
         <div className="hero-glow hero-glow-one" />
         <div className="hero-glow hero-glow-two" />
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="hero-content">
-          <div className="eyebrow"><Zap size={15} /> Your content workflow, reimagined</div>
-          <h1>Make content that<br /><span>moves people.</span></h1>
-          <p>One focused AI studio for the research, writing, strategy, and media feedback behind work people want to share.</p>
+          <div className="eyebrow"><Zap size={15} /> Quy trình sáng tạo nội dung, được định nghĩa lại</div>
+          <h1>Tạo ra nội dung<br /><span>chạm đến trái tim.</span></h1>
+          <p>Một không gian AI tập trung cho việc nghiên cứu, viết lách, chiến lược và đánh giá truyền thông để tạo ra những tác phẩm mọi người muốn chia sẻ.</p>
           <div className="hero-actions">
-            <Link href="/register" className="button button-large">Create for free <ArrowRight size={18} /></Link>
-            <a href="#features" className="text-button">Explore the studio <ArrowRight size={17} /></a>
+            <Link href="/register" className="button button-large">Tạo tài khoản miễn phí <ArrowRight size={18} /></Link>
+            <a href="#features" className="text-button">Khám phá không gian <ArrowRight size={17} /></a>
           </div>
-          <div className="trust-line"><CheckCircle2 size={16} /> No credit card required <span /> Built for creators and small teams</div>
+          <div className="trust-line"><CheckCircle2 size={16} /> Không cần thẻ tín dụng <span /> Dành cho nhà sáng tạo và đội ngũ nhỏ</div>
         </motion.div>
-        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="hero-preview" aria-label="Content workflow preview">
-          <div className="preview-top"><span className="preview-logo"><Sparkles size={15} /> Content workspace</span><span className="preview-status">Live research on</span></div>
+        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="hero-preview" aria-label="Xem trước quy trình">
+          <div className="preview-top"><span className="preview-logo"><Sparkles size={15} /> Không gian làm việc</span><span className="preview-status">Nghiên cứu trực tiếp đang bật</span></div>
           <div className="preview-body">
-            <div className="preview-prompt"><span>✦</span><p>Plan a launch campaign for a new skincare serum</p></div>
-            <div className="preview-answer"><div className="answer-icon"><Bot size={17} /></div><div><strong>Campaign strategist</strong><p>I&apos;ve mapped a 7-day launch with four content angles, creator hooks, and a clear conversion path.</p><div className="answer-tags"><span>Launch strategy</span><span>7-day plan</span></div></div></div>
+            <div className="preview-prompt"><span>✦</span><p>Lên kế hoạch chiến dịch ra mắt cho một loại serum dưỡng da mới</p></div>
+            <div className="preview-answer"><div className="answer-icon"><Bot size={17} /></div><div><strong>Chuyên gia chiến lược</strong><p>Tôi đã lên bản đồ kế hoạch ra mắt 7 ngày với 4 góc độ nội dung, lời kêu gọi và một lộ trình chuyển đổi rõ ràng.</p><div className="answer-tags"><span>Chiến lược ra mắt</span><span>Kế hoạch 7 ngày</span></div></div></div>
           </div>
         </motion.div>
       </section>
 
       <section id="features" className="content-section">
-        <div className="section-heading"><span>ONE PLACE TO CREATE</span><h2>Everything you need to go from blank page to <em>published work.</em></h2><p>Spend less time jumping between tools and more time making ideas feel unmistakably yours.</p></div>
+        <div className="section-heading"><span>MỘT NƠI DUY NHẤT ĐỂ SÁNG TẠO</span><h2>Mọi thứ bạn cần để đi từ trang giấy trắng đến <em>tác phẩm hoàn chỉnh.</em></h2><p>Dành ít thời gian hơn để chuyển đổi giữa các công cụ và dành nhiều thời gian hơn để biến ý tưởng mang đậm dấu ấn của bạn.</p></div>
         <div className="feature-grid">
           {features.map(({ icon: Icon, title, description, color }) => (
             <article className="feature-card" key={title}>
@@ -88,20 +88,20 @@ export default function LandingPage() {
       </section>
 
       <section id="pricing" className="pricing-section">
-        <div className="section-heading"><span>SIMPLE PRICING</span><h2>Start small. <em>Scale when you&apos;re ready.</em></h2><p>Every plan includes a private workspace built around your content.</p></div>
+        <div className="section-heading"><span>BẢNG GIÁ ĐƠN GIẢN</span><h2>Bắt đầu từ gói cơ bản. <em>Nâng cấp khi bạn sẵn sàng.</em></h2><p>Mỗi gói đều bao gồm một không gian làm việc riêng tư được xây dựng xung quanh nội dung của bạn.</p></div>
         <div className="plan-grid">
           {plans.map((plan) => (
             <article className={`plan-card ${plan.featured ? 'plan-featured' : ''}`} key={plan.name}>
-              {plan.featured && <span className="plan-badge">Most popular</span>}
-              <h3>{plan.name}</h3><p>{plan.caption}</p><div className="plan-price">{plan.price}<small>{plan.price !== '$0' && ' / month'}</small></div>
+              {plan.featured && <span className="plan-badge">Phổ biến nhất</span>}
+              <h3>{plan.name}</h3><p>{plan.caption}</p><div className="plan-price">{plan.price}<small>{plan.price !== '$0' && ' / tháng'}</small></div>
               <ul>{plan.items.map(item => <li key={item}><CheckCircle2 size={16} /> {item}</li>)}</ul>
-              <Link href={plan.href} className={`plan-button ${plan.featured ? 'plan-button-featured' : ''}`}>{plan.name === 'Agency' ? 'Talk to sales' : 'Get started'} <ArrowRight size={16} /></Link>
+              <Link href={plan.href} className={`plan-button ${plan.featured ? 'plan-button-featured' : ''}`}>{plan.name === 'Doanh nghiệp' ? 'Liên hệ kinh doanh' : 'Bắt đầu ngay'} <ArrowRight size={16} /></Link>
             </article>
           ))}
         </div>
       </section>
 
-      <footer className="landing-footer"><Link href="/" className="brand"><span className="brand-mark"><Sparkles size={17} /></span><span>ContentPilot <em>AI</em></span></Link><p>© {new Date().getFullYear()} ContentPilot AI</p><div><Link href="/login">Sign in</Link><Link href="/register">Create an account</Link></div></footer>
+      <footer className="landing-footer"><Link href="/" className="brand"><span className="brand-mark"><Sparkles size={17} /></span><span>ContentPilot <em>AI</em></span></Link><p>© {new Date().getFullYear()} ContentPilot AI</p><div><Link href="/login">Đăng nhập</Link><Link href="/register">Tạo tài khoản</Link></div></footer>
     </main>
   );
 }

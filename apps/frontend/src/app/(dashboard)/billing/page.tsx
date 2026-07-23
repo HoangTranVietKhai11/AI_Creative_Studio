@@ -11,8 +11,8 @@ const plans = [
     name: 'Free',
     icon: <Sparkles className="w-6 h-6" />,
     price: '$0',
-    period: '/month',
-    features: ['50 messages/month', '5 documents', '2 AI models', 'Basic agents'],
+    period: '/tháng',
+    features: ['50 tin nhắn/tháng', '5 tài liệu', '2 mô hình AI', 'Đặc vụ cơ bản'],
     color: '#777777',
   },
   {
@@ -20,8 +20,8 @@ const plans = [
     name: 'Pro',
     icon: <Zap className="w-6 h-6" />,
     price: '$29',
-    period: '/month',
-    features: ['2,000 messages/month', '100 documents', '6 AI models', 'All 10 agents', 'Live trend search', 'Image & video analysis'],
+    period: '/tháng',
+    features: ['2.000 tin nhắn/tháng', '100 tài liệu', '6 mô hình AI', 'Tất cả 10 đặc vụ', 'Tìm kiếm xu hướng trực tiếp', 'Phân tích hình ảnh & video'],
     color: '#888888',
   },
   {
@@ -29,8 +29,8 @@ const plans = [
     name: 'Agency',
     icon: <Building2 className="w-6 h-6" />,
     price: '$99',
-    period: '/month',
-    features: ['10,000 messages/month', '1,000 documents', '10+ AI models', 'All agents', 'Auto knowledge updates', 'Custom API key', 'Team features'],
+    period: '/tháng',
+    features: ['10.000 tin nhắn/tháng', '1.000 tài liệu', 'Hơn 10 mô hình AI', 'Tất cả đặc vụ', 'Tự động cập nhật kiến thức', 'Tùy chỉnh API key', 'Tính năng nhóm'],
     color: '#10B981',
   },
 ];
@@ -82,9 +82,9 @@ export default function BillingPage() {
     <div className="p-8 max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold flex items-center gap-3 mb-2">
         <CreditCard className="w-7 h-7" style={{ color: '#a6a6a6' }} />
-        Billing
+        Thanh toán
       </h1>
-      <p className="text-sm mb-8" style={{ color: 'hsl(0 0% 55%)' }}>Manage your plan and usage</p>
+      <p className="text-sm mb-8" style={{ color: 'hsl(0 0% 55%)' }}>Quản lý gói và mức sử dụng của bạn</p>
 
       {/* Error Banner */}
       {error && (
@@ -100,16 +100,16 @@ export default function BillingPage() {
       ) : (
         <div className="p-6 rounded-2xl mb-8" style={{ background: 'hsl(0 0% 11%)', border: '1px solid hsl(0 0% 18%)' }}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold">Current Plan: <span className="gradient-text">{subscription?.plan || 'FREE'}</span></h2>
+            <h2 className="font-semibold">Gói hiện tại: <span className="gradient-text">{subscription?.plan || 'FREE'}</span></h2>
             {subscription && subscription.plan !== 'FREE' && (
               <button onClick={handleManage} className="text-xs px-3 py-1.5 rounded-lg" style={{ background: 'hsl(0 0% 18%)', color: 'hsl(0 0% 65%)' }}>
-                Manage Subscription
+                Quản lý đăng ký
               </button>
             )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs mb-1" style={{ color: 'hsl(0 0% 45%)' }}>Messages</p>
+              <p className="text-xs mb-1" style={{ color: 'hsl(0 0% 45%)' }}>Tin nhắn</p>
               <div className="flex items-center gap-2">
                 <div className="flex-1 h-2 rounded-full" style={{ background: 'hsl(0 0% 18%)' }}>
                   <div className="h-full rounded-full" style={{
@@ -123,7 +123,7 @@ export default function BillingPage() {
               </div>
             </div>
             <div>
-              <p className="text-xs mb-1" style={{ color: 'hsl(0 0% 45%)' }}>Documents</p>
+              <p className="text-xs mb-1" style={{ color: 'hsl(0 0% 45%)' }}>Tài liệu</p>
               <div className="flex items-center gap-2">
                 <div className="flex-1 h-2 rounded-full" style={{ background: 'hsl(0 0% 18%)' }}>
                   <div className="h-full rounded-full" style={{
@@ -157,7 +157,7 @@ export default function BillingPage() {
             >
               {isCurrent && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-semibold" style={{ background: plan.color, color: 'white' }}>
-                  Current Plan
+                  Gói hiện tại
                 </div>
               )}
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${plan.color}15`, color: plan.color }}>
@@ -178,7 +178,7 @@ export default function BillingPage() {
               </ul>
               {!isCurrent && plan.id !== 'FREE' && (
                 <button onClick={() => handleUpgrade(plan.id)} className="w-full py-2.5 rounded-xl text-sm font-semibold" style={{ background: plan.color, color: 'white' }}>
-                  Upgrade to {plan.name}
+                  Nâng cấp lên {plan.name}
                 </button>
               )}
             </motion.div>

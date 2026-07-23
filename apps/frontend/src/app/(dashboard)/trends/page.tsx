@@ -6,11 +6,11 @@ import { TrendingUp, Zap, RefreshCw } from 'lucide-react';
 import { api } from '@/lib/api';
 
 const trendCategories = [
-  { id: 'tiktok-trends', label: 'TikTok Trends', icon: 'movie' },
+  { id: 'tiktok-trends', label: 'Xu hướng TikTok', icon: 'movie' },
   { id: 'content-marketing', label: 'Content Marketing', icon: 'trending_up' },
-  { id: 'social-media', label: 'Social Media', icon: 'share' },
-  { id: 'video-creator', label: 'Video Creator', icon: 'video_library' },
-  { id: 'ecommerce', label: 'eCommerce', icon: 'shopping_bag' },
+  { id: 'social-media', label: 'Mạng xã hội', icon: 'share' },
+  { id: 'video-creator', label: 'Sáng tạo video', icon: 'video_library' },
+  { id: 'ecommerce', label: 'Thương mại điện tử', icon: 'shopping_bag' },
 ];
 
 export default function TrendsPage() {

@@ -70,10 +70,10 @@ export default function ProjectsPage() {
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-3">
             <FolderKanban className="w-7 h-7" style={{ color: '#888888' }} />
-            Projects
+            Dự án
           </h1>
           <p className="text-sm mt-1" style={{ color: 'hsl(0 0% 55%)' }}>
-            Organize your content by brand, client, or campaign
+            Sắp xếp nội dung theo thương hiệu, khách hàng hoặc chiến dịch
           </p>
         </div>
         <button
@@ -81,7 +81,7 @@ export default function ProjectsPage() {
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold"
           style={{ background: 'linear-gradient(135deg, #777777, #7a7a7a)', color: 'white' }}
         >
-          <Plus className="w-4 h-4" /> New Project
+          <Plus className="w-4 h-4" /> Dự án mới
         </button>
       </div>
 
@@ -96,16 +96,23 @@ export default function ProjectsPage() {
       {showCreate && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div className="w-full max-w-lg p-6 rounded-2xl" style={{ background: 'hsl(0 0% 11%)', border: '1px solid hsl(0 0% 18%)' }}>
-            <h2 className="text-lg font-bold mb-4">Create Project</h2>
+            <h2 className="text-lg font-bold mb-4">Tạo dự án</h2>
             <div className="space-y-4">
-              {['name', 'description', 'industry', 'niche', 'brandVoice', 'targetAudience'].map(field => (
-                <div key={field}>
+              {[
+                { id: 'name', label: 'Tên dự án' },
+                { id: 'description', label: 'Mô tả' },
+                { id: 'industry', label: 'Ngành nghề' },
+                { id: 'niche', label: 'Thị trường ngách' },
+                { id: 'brandVoice', label: 'Giọng điệu thương hiệu' },
+                { id: 'targetAudience', label: 'Khách hàng mục tiêu' }
+              ].map(field => (
+                <div key={field.id}>
                   <label className="block text-xs font-medium mb-1 capitalize" style={{ color: 'hsl(0 0% 55%)' }}>
-                    {field.replace(/([A-Z])/g, ' $1')}
+                    {field.label}
                   </label>
                   <input
-                    value={(formData as any)[field]}
-                    onChange={e => setFormData(prev => ({ ...prev, [field]: e.target.value }))}
+                    value={(formData as any)[field.id]}
+                    onChange={e => setFormData(prev => ({ ...prev, [field.id]: e.target.value }))}
                     className="w-full px-3 py-2 rounded-lg text-sm outline-none"
                     style={{ background: 'hsl(0 0% 8%)', border: '1px solid hsl(0 0% 20%)', color: 'hsl(0 0% 90%)' }}
                   />
@@ -113,8 +120,8 @@ export default function ProjectsPage() {
               ))}
             </div>
             <div className="flex justify-end gap-3 mt-6">
-              <button onClick={() => setShowCreate(false)} className="px-4 py-2 rounded-lg text-sm" style={{ color: 'hsl(0 0% 55%)' }}>Cancel</button>
-              <button onClick={createProject} className="px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: '#777777', color: 'white' }}>Create</button>
+              <button onClick={() => setShowCreate(false)} className="px-4 py-2 rounded-lg text-sm" style={{ color: 'hsl(0 0% 55%)' }}>Hủy</button>
+              <button onClick={createProject} className="px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: '#777777', color: 'white' }}>Tạo mới</button>
             </div>
           </div>
         </motion.div>
@@ -128,8 +135,8 @@ export default function ProjectsPage() {
       ) : projects.length === 0 ? (
         <div className="text-center py-20">
           <FolderKanban className="w-12 h-12 mx-auto mb-4" style={{ color: 'hsl(0 0% 30%)' }} />
-          <p className="text-lg font-medium mb-2">No projects yet</p>
-          <p className="text-sm" style={{ color: 'hsl(0 0% 45%)' }}>Create your first project to organize your content</p>
+          <p className="text-lg font-medium mb-2">Chưa có dự án nào</p>
+          <p className="text-sm" style={{ color: 'hsl(0 0% 45%)' }}>Hãy tạo dự án đầu tiên để sắp xếp nội dung của bạn</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -148,7 +155,7 @@ export default function ProjectsPage() {
               )}
               <div className="flex items-center gap-3 text-xs" style={{ color: 'hsl(0 0% 45%)' }}>
                 {project.industry && <span className="px-2 py-0.5 rounded-full" style={{ background: 'hsl(0 0% 18%)' }}>{project.industry}</span>}
-                <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {project._count?.conversations || 0} chats</span>
+                <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {project._count?.conversations || 0} hội thoại</span>
               </div>
               <div className="flex justify-end mt-4">
                 <button onClick={() => deleteProject(project.id)} className="p-1.5 rounded-lg transition-all" style={{ color: 'hsl(0 0% 60%)' }}>

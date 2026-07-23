@@ -25,13 +25,13 @@ interface Conversation {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 const AGENT_BADGES = [
-  { label: 'Script Writer', prompt: 'Viết kịch bản video cho: ' },
-  { label: 'SEO Expert', prompt: 'Tối ưu SEO cho nội dung về: ' },
-  { label: 'Trend Researcher', prompt: 'Phân tích xu hướng hiện tại về: ' },
-  { label: 'Creative Strategist', prompt: 'Lên chiến lược content cho: ' },
-  { label: 'Video Director', prompt: 'Tạo storyboard video về: ' },
-  { label: 'Image Analyst', prompt: 'Phân tích hình ảnh và đưa ra feedback cho: ' },
-  { label: 'Copywriter', prompt: 'Viết copy quảng cáo cho sản phẩm: ' },
+  { label: 'Viết kịch bản', prompt: 'Viết kịch bản video cho: ' },
+  { label: 'Chuyên gia SEO', prompt: 'Tối ưu SEO cho nội dung về: ' },
+  { label: 'Nghiên cứu xu hướng', prompt: 'Phân tích xu hướng hiện tại về: ' },
+  { label: 'Chiến lược gia sáng tạo', prompt: 'Lên chiến lược content cho: ' },
+  { label: 'Đạo diễn video', prompt: 'Tạo storyboard video về: ' },
+  { label: 'Phân tích hình ảnh', prompt: 'Phân tích hình ảnh và đưa ra feedback cho: ' },
+  { label: 'Viết quảng cáo', prompt: 'Viết copy quảng cáo cho sản phẩm: ' },
 ];
 
 export default function ChatPage() {
@@ -418,7 +418,7 @@ export default function ChatPage() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <span className="material-symbols-outlined text-secondary">movie</span>
-                    <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Video Director</span>
+                    <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Đạo diễn video</span>
                   </div>
                   <span className="font-body-md text-body-md text-on-background group-hover:text-primary transition-colors">
                     Lên kịch bản chi tiết cho video TikTok 60s giới thiệu sản phẩm công nghệ mới.
@@ -431,7 +431,7 @@ export default function ChatPage() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <span className="material-symbols-outlined text-tertiary-container">trending_up</span>
-                    <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Trend Researcher</span>
+                    <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Nghiên cứu xu hướng</span>
                   </div>
                   <span className="font-body-md text-body-md text-on-background group-hover:text-primary transition-colors">
                     Phân tích 3 xu hướng content marketing nổi bật nhất trong quý này.
@@ -444,7 +444,7 @@ export default function ChatPage() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <span className="material-symbols-outlined text-primary">description</span>
-                    <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Copywriter</span>
+                    <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Viết quảng cáo</span>
                   </div>
                   <span className="font-body-md text-body-md text-on-background group-hover:text-primary transition-colors">
                     Viết 5 mẫu tiêu đề thu hút cho bài blog hướng dẫn sử dụng AI trong thiết kế UI/UX.

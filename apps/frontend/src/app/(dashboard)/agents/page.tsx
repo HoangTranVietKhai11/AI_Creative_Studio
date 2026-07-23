@@ -6,7 +6,7 @@ import { Bot, Zap, ChevronRight } from 'lucide-react';
 
 const agents = [
   {
-    name: 'Script Writer',
+    name: 'Viết kịch bản',
     icon: 'movie',
     color: '#7a7a7a',
     description: 'Chuyên viết kịch bản cho TikTok, YouTube, Reels. Tạo hook, narrative và CTA mạnh.',
@@ -14,7 +14,7 @@ const agents = [
     samplePrompt: 'Viết kịch bản TikTok 60 giây về [chủ đề]',
   },
   {
-    name: 'SEO Expert',
+    name: 'Chuyên gia SEO',
     icon: 'search',
     color: '#10B981',
     description: 'Tối ưu nội dung cho công cụ tìm kiếm. Nghiên cứu từ khóa và lên cấu trúc bài viết.',
@@ -22,7 +22,7 @@ const agents = [
     samplePrompt: 'Tối ưu SEO cho bài viết về [từ khóa]',
   },
   {
-    name: 'Trend Researcher',
+    name: 'Nghiên cứu xu hướng',
     icon: 'trending_up',
     color: '#F59E0B',
     description: 'Phân tích xu hướng thị trường real-time. Tìm ra topic đang hot để tạo nội dung kịp thời.',
@@ -30,7 +30,7 @@ const agents = [
     samplePrompt: 'Phân tích xu hướng [ngành] trong tháng này',
   },
   {
-    name: 'Creative Strategist',
+    name: 'Chiến lược gia sáng tạo',
     icon: 'lightbulb',
     color: '#888888',
     description: 'Lên chiến lược nội dung dài hạn. Xây dựng brand voice và content calendar toàn diện.',
@@ -38,7 +38,7 @@ const agents = [
     samplePrompt: 'Lên chiến lược content 3 tháng cho [brand]',
   },
   {
-    name: 'Video Director',
+    name: 'Đạo diễn video',
     icon: 'videocam',
     color: '#a6a6a6',
     description: 'Chỉ đạo sản xuất video chuyên nghiệp. Từ storyboard đến hướng dẫn quay và dựng phim.',
@@ -46,7 +46,7 @@ const agents = [
     samplePrompt: 'Tạo storyboard cho video [loại nội dung]',
   },
   {
-    name: 'Image Analyst',
+    name: 'Phân tích hình ảnh',
     icon: 'image_search',
     color: '#858585',
     description: 'Phân tích hình ảnh và video. Đưa ra feedback về composition, màu sắc và cách cải thiện.',
@@ -54,7 +54,7 @@ const agents = [
     samplePrompt: 'Phân tích và đưa ra feedback cho ảnh này',
   },
   {
-    name: 'Copywriter',
+    name: 'Viết quảng cáo',
     icon: 'edit_note',
     color: '#b8b8b8',
     description: 'Viết copy quảng cáo chuyển đổi cao. Từ headline đến body copy và email marketing.',
@@ -85,7 +85,7 @@ export default function AgentsPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold flex items-center gap-3 mb-2">
           <Bot className="w-7 h-7 text-primary" />
-          AI Agents
+          Các đặc vụ AI
         </h1>
         <p className="text-sm text-on-surface-variant">
           Các AI chuyên biệt được tối ưu cho từng loại tác vụ nội dung
