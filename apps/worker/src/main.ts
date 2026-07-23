@@ -13,6 +13,7 @@ import { QUEUE_NAMES, AUTO_CRAWL_SOURCES } from '@contentpilot/shared';
 import { processEmbeddingJob } from './processors/embedding.processor';
 import { processCrawlJob } from './processors/crawl.processor';
 import { processMediaAnalysisJob } from './processors/media-analysis.processor';
+import * as http from 'http';
 
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 
@@ -26,6 +27,22 @@ async function main() {
 
   console.log('✅ Database connected');
   console.log('✅ Redis connected');
+
+  // ── Dummy HTTP Server (for Render Free Tier) ─
+  const port = process.env.PORT || 4001;
+  const server = http.createServer((req, res) => {
+    if (req.url === '/health' || req.url === '/') {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('OK - Worker is alive\n');
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  });
+  
+  server.listen(port, () => {
+    console.log(`🌐 Dummy HTTP Server listening on port ${port} to keep Render happy`);
+  });
 
   // ── Embedding Worker ───────────────────────
   const embeddingWorker = new Worker(
