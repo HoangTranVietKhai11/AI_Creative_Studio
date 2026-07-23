@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Chat - ContentPilot AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#191c1d",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "outline": "#777587",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-container": "#d9dff5",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#dad7ff",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-container": "#5c6274",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "outline-variant": "#c7c4d8",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "on-secondary-fixed-variant": "#404758",
+                        "on-secondary-fixed": "#141b2b",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-surface-variant": "#464555",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#c3c0ff",
+                        "inverse-surface": "#2e3132",
+                        "tertiary-fixed": "#ffdbcc",
+                        "primary-container": "#4f46e5",
+                        "primary": "#3525cd",
+                        "surface-tint": "#4d44e3",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "surface-variant": "#e1e3e4",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#edeeef",
+                        "on-tertiary-container": "#ffd2be",
+                        "on-tertiary-fixed": "#351000",
+                        "on-background": "#191c1d",
+                        "surface-container-highest": "#e1e3e4",
+                        "tertiary-container": "#a44100",
+                        "tertiary": "#7e3000",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#0f0069",
+                        "secondary-fixed": "#dce2f7",
+                        "secondary": "#575e70",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#e2dfff",
+                        "surface": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "2xl": "48px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "xs": "8px",
+                        "container-max": "1280px",
+                        "base": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Geist"],
+                        "title-md": ["Geist"],
+                        "display-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "title-md": ["18px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .geist { font-family: 'Geist', sans-serif; }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: #e1e3e4; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background-color: #c7c4d8; }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen overflow-hidden flex font-body-md text-body-md">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full w-64 bg-surface-container-lowest border-r border-outline-variant shrink-0 z-50">
+<div class="flex flex-col h-full p-md gap-xs">
+<div class="mb-lg px-sm">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface">ContentPilot AI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">AI Enterprise Suite</p>
+</div>
+<button class="mb-md w-full bg-primary text-on-primary rounded-xl py-2 px-4 font-title-md text-title-md font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                + Cuộc trò chuyện mới
+            </button>
+<nav class="flex-1 overflow-y-auto space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container rounded-xl font-medium transition-transform duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">chat</span>
+                    AI Chat
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">folder</span>
+                    Dự án
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">database</span>
+                    Kho kiến thức
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">image</span>
+                    Phân tích hình ảnh
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">movie_filter</span>
+                    Phân tích video
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+                    Xu hướng
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">search_check</span>
+                    SEO
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">history</span>
+                    Lịch sử
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Cài đặt
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">card_membership</span>
+                    Gói dịch vụ
+                </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+                    Hồ sơ
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">verified</span>
+                    Nâng cấp Pro
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col h-full w-full relative">
+<!-- TopNavBar (Mobile only for full nav, but providing header area for desktop) -->
+<header class="flex justify-between items-center h-16 px-lg w-full sticky top-0 z-40 bg-surface/80 backdrop-blur-md shrink-0">
+<!-- Mobile Menu Button -->
+<button class="md:hidden text-on-surface-variant p-2 rounded-lg hover:bg-surface-container-high">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex-1 flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 text-sm text-on-surface-variant">
+<span class="hover:text-primary cursor-pointer transition-colors">Trang chủ</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-on-surface font-medium">AI Chat</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-outline-variant hover:border-outline transition-colors bg-surface-container-lowest">
+<span class="font-title-md text-title-md text-sm">GPT-5</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<button class="hidden sm:flex px-4 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-medium">
+                    Chia sẻ
+                </button>
+<button class="hidden sm:flex px-4 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors text-sm font-medium">
+                    Xuất kết quả
+                </button>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full ml-2 object-cover border border-outline-variant" data-alt="A clean, minimalist user avatar placeholder image in light mode styling, featuring a simple abstract geometric shape representing a profile in soft indigo and gray tones against a pristine white background. The aesthetic is modern, professional B2B SaaS." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChr966C2KVVwO19gyKvsfSxNM9Qr8_b56kafTobRa3n-P2ALAfAKCkwtipCMpB4T_B19gAqH2STcZWSy2sMcRzvV3Q0lBYZV-jzpaO9oI2lCuf0_ipSEwdORUmRIcmJ9sKpawRw55GjwsFaPQIIbtkrmatE96w4kAmclgUCq2R8aEu_VNF9hFFGrB8pOP5XJMbXTY8NFbXRCKpdBogJ_4tfHBR1D8trWjRnIfQXfi0aL7KuKaB3gojjPMq4MExlz_NRPjih_HTWL2a"/>
+</div>
+</div>
+</header>
+<!-- Main Chat Area -->
+<main class="flex-1 flex flex-col w-full max-w-4xl mx-auto px-4 sm:px-lg pb-0 pt-lg overflow-hidden relative">
+<!-- Top Agent Badges -->
+<div class="flex flex-wrap gap-2 justify-center mb-xl shrink-0">
+<button class="px-4 py-1.5 rounded-full bg-secondary-container/50 text-on-surface hover:bg-secondary-container transition-colors text-sm font-medium border border-outline-variant/30 flex items-center gap-2">
+<span>🧠</span> Chuyên gia SEO
+                </button>
+<button class="px-4 py-1.5 rounded-full bg-secondary-container/50 text-on-surface hover:bg-secondary-container transition-colors text-sm font-medium border border-outline-variant/30 flex items-center gap-2">
+<span>🎬</span> Chuyên gia Kịch bản
+                </button>
+<button class="px-4 py-1.5 rounded-full bg-secondary-container/50 text-on-surface hover:bg-secondary-container transition-colors text-sm font-medium border border-outline-variant/30 flex items-center gap-2">
+<span>📈</span> Chuyên gia Marketing
+                </button>
+<button class="px-4 py-1.5 rounded-full bg-secondary-container/50 text-on-surface hover:bg-secondary-container transition-colors text-sm font-medium border border-outline-variant/30 flex items-center gap-2">
+<span>🛍️</span> Chuyên gia TikTok Shop
+                </button>
+<button class="px-4 py-1.5 rounded-full bg-secondary-container/50 text-on-surface hover:bg-secondary-container transition-colors text-sm font-medium border border-outline-variant/30 flex items-center gap-2">
+<span>📝</span> Copywriter
+                </button>
+<button class="px-4 py-1.5 rounded-full bg-primary-container/20 text-primary hover:bg-primary-container/40 transition-colors text-sm font-medium border border-primary/20 flex items-center gap-2">
+<span>🤖</span> AI Tổng hợp
+                </button>
+</div>
+<!-- Content Canvas (Scrollable) -->
+<div class="flex-1 overflow-y-auto flex flex-col items-center justify-center pb-32">
+<div class="text-center mb-12">
+<div class="w-16 h-16 bg-gradient-to-br from-primary-fixed-dim to-primary rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-primary text-3xl">auto_awesome</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Tôi có thể giúp gì cho bạn hôm nay?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Chọn một mẫu chuyên gia hoặc bắt đầu gõ yêu cầu của bạn.</p>
+</div>
+<!-- Empty State Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+<button class="text-left p-lg rounded-xl bg-surface-container-lowest border border-outline-variant hover:border-primary/50 hover:shadow-sm transition-all group flex flex-col gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">movie</span>
+<span class="font-title-md text-title-md text-on-surface text-sm">Tạo kịch bản TikTok bán mỹ phẩm</span>
+</button>
+<button class="text-left p-lg rounded-xl bg-surface-container-lowest border border-outline-variant hover:border-primary/50 hover:shadow-sm transition-all group flex flex-col gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">post_add</span>
+<span class="font-title-md text-title-md text-on-surface text-sm">Viết content Facebook cho spa</span>
+</button>
+<button class="text-left p-lg rounded-xl bg-surface-container-lowest border border-outline-variant hover:border-primary/50 hover:shadow-sm transition-all group flex flex-col gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">calendar_month</span>
+<span class="font-title-md text-title-md text-on-surface text-sm">Lập kế hoạch nội dung 30 ngày</span>
+</button>
+<button class="text-left p-lg rounded-xl bg-surface-container-lowest border border-outline-variant hover:border-primary/50 hover:shadow-sm transition-all group flex flex-col gap-3 lg:col-span-2">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">analytics</span>
+<span class="font-title-md text-title-md text-on-surface text-sm">Phân tích đối thủ cạnh tranh ngành F&amp;B</span>
+</button>
+<button class="text-left p-lg rounded-xl bg-surface-container-lowest border border-outline-variant hover:border-primary/50 hover:shadow-sm transition-all group flex flex-col gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">trending_up</span>
+<span class="font-title-md text-title-md text-on-surface text-sm">Tối ưu SEO bài viết blog</span>
+</button>
+</div>
+</div>
+<!-- Chat Input Bar -->
+<div class="absolute bottom-0 left-0 right-0 p-4 sm:p-lg bg-gradient-to-t from-background via-background to-transparent pt-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-[24px] p-2 flex items-end gap-2 shadow-sm focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<!-- Attachments -->
+<div class="flex items-center gap-1 pb-2 pl-2">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors" title="Đính kèm tệp">
+<span class="material-symbols-outlined text-xl">attach_file</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors" title="Thêm hình ảnh">
+<span class="material-symbols-outlined text-xl">image</span>
+</button>
+<button class="hidden sm:block p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors" title="Thêm video">
+<span class="material-symbols-outlined text-xl">movie</span>
+</button>
+<button class="hidden sm:block p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors" title="Tìm kiếm web">
+<span class="material-symbols-outlined text-xl">language</span>
+</button>
+</div>
+<!-- Textarea -->
+<div class="flex-1 min-h-[44px] max-h-32 overflow-y-auto pb-1">
+<textarea class="w-full bg-transparent border-none focus:ring-0 resize-none font-body-md text-body-md py-3 placeholder:text-on-surface-variant/50" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" placeholder="Hỏi ContentPilot AI bất kỳ điều gì..." rows="1"></textarea>
+</div>
+<!-- Submit Button -->
+<div class="pb-1 pr-1">
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50">
+<span class="material-symbols-outlined text-xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<div class="text-center mt-2">
+<span class="font-label-sm text-label-sm text-outline text-xs">AI có thể tạo ra thông tin không chính xác. Hãy kiểm tra các thông tin quan trọng.</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

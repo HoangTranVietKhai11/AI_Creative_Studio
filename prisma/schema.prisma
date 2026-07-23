@@ -1,0 +1,382 @@
+// ============================================
+// ContentPilot AI — Prisma Schema
+// ============================================
+// PostgreSQL with pgvector extension
+// ============================================
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector, pgcrypto]
+}
+
+// ──────────────────────────────────────────────
+// ENUMS
+// ──────────────────────────────────────────────
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  GITHUB
+}
+
+enum SubscriptionPlan {
+  FREE
+  PRO
+  AGENCY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+  INACTIVE
+}
+
+enum DocumentType {
+  PDF
+  DOCX
+  TXT
+  MARKDOWN
+  CSV
+  URL
+}
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum EmbeddingSource {
+  UPLOAD
+  AUTO_CRAWL
+  URL_SCRAPE
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum MediaAnalysisStatus {
+  PENDING
+  ANALYZING
+  COMPLETED
+  FAILED
+}
+
+// ──────────────────────────────────────────────
+// USERS & AUTH
+// ──────────────────────────────────────────────
+
+model User {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email         String       @unique @db.VarChar(255)
+  passwordHash  String?      @map("password_hash") @db.VarChar(255)
+  name          String?      @db.VarChar(255)
+  avatarUrl     String?      @map("avatar_url") @db.Text
+  role          UserRole     @default(USER)
+  provider      AuthProvider @default(EMAIL)
+  providerId    String?      @map("provider_id") @db.VarChar(255)
+
+  // User-specific API key (encrypted) for OpenRouter
+  encryptedApiKey String?    @map("encrypted_api_key") @db.Text
+
+  // AI preferences
+  preferredModel String?     @default("anthropic/claude-sonnet-4") @map("preferred_model") @db.VarChar(100)
+
+  // Refresh token for JWT rotation
+  refreshToken   String?     @map("refresh_token") @db.Text
+
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  subscription  Subscription?
+  projects      Project[]
+  conversations Conversation[]
+  documents     Document[]
+  savedPrompts  SavedPrompt[]
+  uploadedMedia UploadedMedia[]
+
+  @@map("users")
+}
+
+// ──────────────────────────────────────────────
+// SUBSCRIPTIONS (Stripe)
+// ──────────────────────────────────────────────
+
+model Subscription {
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId               String             @unique @map("user_id") @db.Uuid
+  stripeCustomerId     String?            @unique @map("stripe_customer_id") @db.VarChar(255)
+  stripeSubscriptionId String?            @unique @map("stripe_subscription_id") @db.VarChar(255)
+  plan                 SubscriptionPlan   @default(FREE)
+  status               SubscriptionStatus @default(INACTIVE)
+  currentPeriodStart   DateTime?          @map("current_period_start") @db.Timestamptz(6)
+  currentPeriodEnd     DateTime?          @map("current_period_end") @db.Timestamptz(6)
+
+  // Usage tracking
+  messagesUsed         Int                @default(0) @map("messages_used")
+  messagesLimit        Int                @default(50) @map("messages_limit")
+  documentsUsed        Int                @default(0) @map("documents_used")
+  documentsLimit       Int                @default(5) @map("documents_limit")
+
+  createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// ──────────────────────────────────────────────
+// PROJECTS
+// ──────────────────────────────────────────────
+
+model Project {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  name        String   @db.VarChar(255)
+  description String?  @db.Text
+  industry    String?  @db.VarChar(100)
+  niche       String?  @db.VarChar(100)
+  brandVoice  String?  @map("brand_voice") @db.Text
+  targetAudience String? @map("target_audience") @db.Text
+  metadata    Json?    @default("{}")
+
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversations Conversation[]
+
+  @@index([userId])
+  @@map("projects")
+}
+
+// ──────────────────────────────────────────────
+// CONVERSATIONS & MESSAGES (Chat History)
+// ──────────────────────────────────────────────
+
+model Conversation {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  projectId String?  @map("project_id") @db.Uuid
+  title     String   @default("New Conversation") @db.VarChar(255)
+  model     String?  @db.VarChar(100)
+  metadata  Json?    @default("{}")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project  Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  messages Message[]
+
+  @@index([userId])
+  @@index([projectId])
+  @@map("conversations")
+}
+
+model Message {
+  id             String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  conversationId String  @map("conversation_id") @db.Uuid
+  role           String  @db.VarChar(20) // user, assistant, system
+  content        String  @db.Text
+  agentName      String? @map("agent_name") @db.VarChar(50)
+
+  // Metadata for sources, search results, etc.
+  sources        Json?   @default("[]")
+  metadata       Json?   @default("{}")
+
+  // Token usage tracking
+  promptTokens     Int?  @map("prompt_tokens")
+  completionTokens Int?  @map("completion_tokens")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@map("messages")
+}
+
+// ──────────────────────────────────────────────
+// KNOWLEDGE BASE (Documents & Embeddings)
+// ──────────────────────────────────────────────
+
+model Document {
+  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String?        @map("user_id") @db.Uuid
+  title       String         @db.VarChar(500)
+  type        DocumentType
+  status      DocumentStatus @default(PENDING)
+  filePath    String?        @map("file_path") @db.Text
+  sourceUrl   String?        @map("source_url") @db.Text
+  fileSize    Int?           @map("file_size")
+  mimeType    String?        @map("mime_type") @db.VarChar(100)
+  rawContent  String?        @map("raw_content") @db.Text
+  chunkCount  Int            @default(0) @map("chunk_count")
+  errorMsg    String?        @map("error_msg") @db.Text
+  metadata    Json?          @default("{}")
+
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  embeddings Embedding[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("documents")
+}
+
+model Embedding {
+  id          String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId  String?         @map("document_id") @db.Uuid
+  content     String          @db.Text
+  contentHash String          @map("content_hash") @db.VarChar(64)
+  // pgvector column — managed via raw SQL migration
+  // embedding   Unsupported("vector(1536)")
+  source      EmbeddingSource @default(UPLOAD)
+  metadata    Json?           @default("{}")
+
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  document    Document?       @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([contentHash])
+  @@index([documentId])
+  @@map("embeddings")
+}
+
+// ──────────────────────────────────────────────
+// SAVED PROMPTS
+// ──────────────────────────────────────────────
+
+model SavedPrompt {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  title       String   @db.VarChar(255)
+  content     String   @db.Text
+  category    String?  @db.VarChar(100)
+  tags        String[] @default([])
+  isPublic    Boolean  @default(false) @map("is_public")
+  usageCount  Int      @default(0) @map("usage_count")
+
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([category])
+  @@map("saved_prompts")
+}
+
+// ──────────────────────────────────────────────
+// CACHES
+// ──────────────────────────────────────────────
+
+model SearchCache {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  query     String   @db.Text
+  queryHash String   @unique @map("query_hash") @db.VarChar(64)
+  results   Json     @default("[]")
+  provider  String   @db.VarChar(50) // tavily, brave
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([queryHash])
+  @@index([expiresAt])
+  @@map("search_cache")
+}
+
+model TrendCache {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  topic     String   @db.VarChar(255)
+  industry  String?  @db.VarChar(100)
+  data      Json     @default("{}")
+  source    String   @db.VarChar(100)
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([topic])
+  @@index([industry])
+  @@index([expiresAt])
+  @@map("trend_cache")
+}
+
+// ──────────────────────────────────────────────
+// UPLOADED MEDIA (Images & Videos)
+// ──────────────────────────────────────────────
+
+model UploadedMedia {
+  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String              @map("user_id") @db.Uuid
+  type           MediaType
+  filename       String              @db.VarChar(500)
+  filePath       String              @map("file_path") @db.Text
+  mimeType       String              @map("mime_type") @db.VarChar(100)
+  fileSize       Int                 @map("file_size")
+  thumbnailPath  String?             @map("thumbnail_path") @db.Text
+  analysisStatus MediaAnalysisStatus @default(PENDING) @map("analysis_status")
+  analysisResult Json?               @map("analysis_result")
+  metadata       Json?               @default("{}")
+
+  createdAt      DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([analysisStatus])
+  @@map("uploaded_media")
+}
+
+// ──────────────────────────────────────────────
+// AGENT CONFIGURATIONS
+// ──────────────────────────────────────────────
+
+model AgentConfig {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @unique @db.VarChar(100)
+  displayName String   @map("display_name") @db.VarChar(255)
+  description String?  @db.Text
+  systemPrompt String  @map("system_prompt") @db.Text
+  model       String?  @db.VarChar(100)
+  temperature Float?   @default(0.7)
+  maxTokens   Int?     @default(4096) @map("max_tokens")
+  tools       Json?    @default("[]")
+  isActive    Boolean  @default(true) @map("is_active")
+
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("agent_configs")
+}

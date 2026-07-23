@@ -1,0 +1,124 @@
+# ============================================
+# ContentPilot AI — Render Blueprint
+# ============================================
+# Deploy all services to Render
+# ============================================
+
+services:
+  # ──────────────────────────────────────────
+  # Frontend (Next.js)
+  # ──────────────────────────────────────────
+  - type: web
+    name: contentpilot-frontend
+    runtime: docker
+    dockerfilePath: ./docker/Dockerfile.frontend
+    dockerContext: .
+    plan: starter
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: contentpilot-backend
+          type: web
+          property: host
+          envVarKey: API_URL
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        sync: false
+
+  # ──────────────────────────────────────────
+  # Backend API (NestJS)
+  # ──────────────────────────────────────────
+  - type: web
+    name: contentpilot-backend
+    runtime: docker
+    dockerfilePath: ./docker/Dockerfile.backend
+    dockerContext: .
+    plan: starter
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: contentpilot-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: contentpilot-redis
+          type: redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: FIRECRAWL_API_KEY
+        sync: false
+      - key: BRAVE_SEARCH_API_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: APP_URL
+        sync: false
+
+  # ──────────────────────────────────────────
+  # Worker (BullMQ)
+  # ──────────────────────────────────────────
+  - type: worker
+    name: contentpilot-worker
+    runtime: docker
+    dockerfilePath: ./docker/Dockerfile.worker
+    dockerContext: .
+    plan: starter
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: contentpilot-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: contentpilot-redis
+          type: redis
+          property: connectionString
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: FIRECRAWL_API_KEY
+        sync: false
+
+  # ──────────────────────────────────────────
+  # Redis
+  # ──────────────────────────────────────────
+  - type: redis
+    name: contentpilot-redis
+    plan: starter
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+databases:
+  # ──────────────────────────────────────────
+  # PostgreSQL (with pgvector enabled)
+  # ──────────────────────────────────────────
+  - name: contentpilot-db
+    plan: starter
+    databaseName: contentpilot
+    postgresMajorVersion: "16"
+    ipAllowList: []

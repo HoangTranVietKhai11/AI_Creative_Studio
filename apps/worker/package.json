@@ -1,0 +1,32 @@
+{
+  "name": "@contentpilot/worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node --transpile-only src/main.ts",
+    "start": "node dist/main.js",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'lint ok'"
+  },
+  "dependencies": {
+    "@contentpilot/shared": "workspace:*",
+    "@contentpilot/ai": "workspace:*",
+    "@contentpilot/config": "workspace:*",
+    "@prisma/client": "^6.0.0",
+    "bullmq": "^5.0.0",
+    "ioredis": "^5.4.0",
+    "pdf-parse": "^1.1.0",
+    "mammoth": "^1.8.0",
+    "csv-parse": "^5.6.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.8.0",
+    "rimraf": "^6.0.0",
+    "@types/node": "^22.0.0"
+  }
+}

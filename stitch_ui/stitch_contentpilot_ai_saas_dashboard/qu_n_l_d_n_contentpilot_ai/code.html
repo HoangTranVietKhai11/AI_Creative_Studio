@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quản lý dự án - ContentPilot AI</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 20px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Custom Scrollbar for Kanban Board */
+        .kanban-scroll::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .kanban-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .kanban-scroll::-webkit-scrollbar-thumb {
+            background-color: #dce2f7; /* surface-variant */
+            border-radius: 4px;
+        }
+        .kanban-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: #c7c4d8; /* outline-variant */
+        }
+    </style>
+<!-- Tailwind Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#001e2f",
+                    "surface-container-high": "#e1e8fd",
+                    "primary": "#3525cd",
+                    "on-background": "#141b2b",
+                    "primary-fixed": "#e2dfff",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#ffd0d2",
+                    "inverse-primary": "#c3c0ff",
+                    "secondary-fixed-dim": "#89ceff",
+                    "on-tertiary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary": "#006591",
+                    "inverse-on-surface": "#edf0ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#141b2b",
+                    "secondary-container": "#39b8fd",
+                    "on-secondary-fixed-variant": "#004c6e",
+                    "tertiary": "#95002b",
+                    "surface-container-low": "#f1f3ff",
+                    "on-primary-container": "#dad7ff",
+                    "surface-variant": "#dce2f7",
+                    "surface-container": "#e9edff",
+                    "surface-tint": "#4d44e3",
+                    "tertiary-container": "#bf0f3c",
+                    "on-primary-fixed": "#0f0069",
+                    "secondary-fixed": "#c9e6ff",
+                    "primary-container": "#4f46e5",
+                    "surface-container-highest": "#dce2f7",
+                    "inverse-surface": "#293040",
+                    "on-surface-variant": "#464555",
+                    "background": "#f9f9ff",
+                    "tertiary-fixed": "#ffdadb",
+                    "surface-bright": "#f9f9ff",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "surface-dim": "#d3daef",
+                    "outline-variant": "#c7c4d8",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#004666",
+                    "on-primary": "#ffffff",
+                    "outline": "#777587",
+                    "on-tertiary-fixed": "#40000d",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-fixed-variant": "#92002a",
+                    "tertiary-fixed-dim": "#ffb2b7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "container-max": "1440px",
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "label-sm": ["Geist"],
+                    "display-lg-mobile": ["Geist"],
+                    "label-md": ["Geist"],
+                    "headline-md": ["Geist"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-background flex h-screen overflow-hidden antialiased">
+<!-- SideNavBar -->
+<nav class="bg-surface dark:bg-on-background h-screen w-64 border-r border-outline-variant fixed left-0 top-0 h-full flex flex-col p-4 z-50">
+<!-- Brand Header -->
+<div class="flex items-center gap-3 px-2 mb-8 mt-2">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary font-bold">
+                C
+            </div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary text-[20px]">ContentPilot AI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">AI Workspace</p>
+</div>
+</div>
+<!-- Create CTA -->
+<button class="mb-6 w-full bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            Tạo mới
+        </button>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto space-y-1">
+<!-- AI Chat -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">chat_spark</span>
+                AI Chat
+            </a>
+<!-- Dự án (Active) -->
+<a class="flex items-center gap-3 px-3 py-2.5 bg-surface-container-high dark:bg-primary-container text-primary dark:text-on-primary-container font-medium rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+                Dự án
+            </a>
+<!-- Kho kiến thức -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">database</span>
+                Kho kiến thức
+            </a>
+<!-- Phân tích ảnh/video -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">video_search</span>
+                Phân tích ảnh/video
+            </a>
+<!-- Xu hướng -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">trending_up</span>
+                Xu hướng
+            </a>
+<!-- Thư viện Prompt -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">terminal</span>
+                Thư viện Prompt
+            </a>
+<!-- AI Agents -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">smart_toy</span>
+                AI Agents
+            </a>
+<!-- Thanh toán -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">payments</span>
+                Thanh toán
+            </a>
+<!-- Cài đặt -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">settings</span>
+                Cài đặt
+            </a>
+</div>
+<!-- Footer Tab -->
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg font-body-md text-body-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">upgrade</span>
+                Nâng cấp
+            </a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col ml-64 min-w-0 h-full">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background docked full-width top border-b border-outline-variant sticky top-0 z-40 flex justify-between items-center h-14 px-margin-desktop w-full">
+<!-- Left: Breadcrumbs / Nav Links -->
+<div class="flex items-center gap-6 h-full">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors flex items-center h-full" href="#">
+                    Workspace
+                </a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors flex items-center h-full" href="#">
+                    Model Selector
+                </a>
+</div>
+<!-- Right: Actions & Profile -->
+<div class="flex items-center gap-4">
+<button class="font-label-md text-label-md text-primary dark:text-inverse-primary hover:bg-surface-container-low px-3 py-1.5 rounded transition-colors">
+                    Nâng cấp
+                </button>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-low scale-95 active:scale-100 transition-transform">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-low scale-95 active:scale-100 transition-transform">
+<span class="material-symbols-outlined text-[24px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 flex flex-col overflow-hidden bg-background">
+<!-- Page Header -->
+<div class="px-margin-desktop py-8 shrink-0 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Quản lý dự án</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tổng quan các chiến dịch nội dung đang thực hiện.</p>
+</div>
+<div class="flex items-center gap-4">
+<!-- View Switcher -->
+<div class="flex bg-surface border border-outline-variant rounded-lg p-1">
+<button class="px-4 py-1.5 rounded-md bg-surface-container-high text-primary font-label-md text-label-md shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">view_kanban</span>
+                            Board
+                        </button>
+<button class="px-4 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">view_list</span>
+                            List
+                        </button>
+<button class="px-4 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">calendar_month</span>
+                            Calendar
+                        </button>
+</div>
+<!-- Filter Button -->
+<button class="px-4 py-2 border border-outline-variant bg-surface text-on-surface hover:bg-surface-container-low rounded-lg font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Lọc
+                    </button>
+</div>
+</div>
+<!-- Kanban Board Area -->
+<div class="flex-1 overflow-x-auto overflow-y-hidden kanban-scroll px-margin-desktop pb-8 flex gap-6">
+<!-- Column: Nháp (Draft) -->
+<div class="w-[340px] shrink-0 flex flex-col max-h-full">
+<div class="flex items-center justify-between mb-4 px-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Khởi tạo</h3>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full text-[11px] font-medium">2</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">add</span></button>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-4 kanban-scroll">
+<!-- Card 1 -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-shadow cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant text-[11px] font-semibold rounded uppercase tracking-wider">F&amp;B</span>
+<button class="text-outline-variant group-hover:text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+</div>
+<h4 class="font-headline-md text-[18px] font-semibold text-on-surface mb-4 leading-tight group-hover:text-primary transition-colors">Kế hoạch nội dung khai trương nhà hàng chay</h4>
+<!-- Meta info -->
+<div class="flex flex-col gap-2 mb-5">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">folder_shared</span>
+<span>Workspace: GreenLife</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">attach_file</span>
+<span>3 files đính kèm</span>
+</div>
+</div>
+<!-- Footer: Agent & Status -->
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Copywriter AI</span>
+</div>
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant font-label-sm text-[11px] rounded-full">Nháp</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-shadow cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant text-[11px] font-semibold rounded uppercase tracking-wider">Edu</span>
+<button class="text-outline-variant group-hover:text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+</div>
+<h4 class="font-headline-md text-[18px] font-semibold text-on-surface mb-4 leading-tight group-hover:text-primary transition-colors">Bài viết SEO khóa học lập trình Python</h4>
+<!-- Meta info -->
+<div class="flex flex-col gap-2 mb-5">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">folder_shared</span>
+<span>Workspace: CodeAcademy</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">attach_file</span>
+<span>0 files đính kèm</span>
+</div>
+</div>
+<!-- Footer: Agent & Status -->
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">SEO Specialist AI</span>
+</div>
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant font-label-sm text-[11px] rounded-full">Khởi tạo</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Đang xử lý (In Progress) -->
+<div class="w-[340px] shrink-0 flex flex-col max-h-full">
+<div class="flex items-center justify-between mb-4 px-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Đang xử lý</h3>
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full text-[11px] font-medium">1</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">add</span></button>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-4 kanban-scroll">
+<!-- Card 3 -->
+<div class="bg-surface border border-primary/30 rounded-xl p-6 shadow-[0_2px_8px_rgba(53,37,205,0.08)] cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant text-[11px] font-semibold rounded uppercase tracking-wider">Beauty</span>
+<button class="text-outline-variant group-hover:text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+</div>
+<h4 class="font-headline-md text-[18px] font-semibold text-on-surface mb-4 leading-tight group-hover:text-primary transition-colors">Kịch bản Tiktok review kem chống nắng thế hệ mới</h4>
+<!-- Progress Bar -->
+<div class="mb-4">
+<div class="flex justify-between text-[11px] font-medium text-on-surface-variant mb-1.5">
+<span>Tiến độ AI</span>
+<span>65%</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-1.5 overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-secondary-container h-full rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<!-- Meta info -->
+<div class="flex flex-col gap-2 mb-5">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">folder_shared</span>
+<span>Workspace: GlowUp VN</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">attach_file</span>
+<span>5 files đính kèm</span>
+</div>
+</div>
+<!-- Footer: Agent & Status -->
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Video Script AI</span>
+</div>
+<span class="px-2 py-1 bg-primary-fixed text-primary font-label-sm text-[11px] rounded-full flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                    Đang tạo
+                                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Chờ duyệt (Review) -->
+<div class="w-[340px] shrink-0 flex flex-col max-h-full">
+<div class="flex items-center justify-between mb-4 px-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Chờ duyệt</h3>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full text-[11px] font-medium">1</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">add</span></button>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-4 kanban-scroll">
+<!-- Card 4 -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-shadow cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant text-[11px] font-semibold rounded uppercase tracking-wider">Fashion</span>
+<button class="text-outline-variant group-hover:text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+</div>
+<h4 class="font-headline-md text-[18px] font-semibold text-on-surface mb-4 leading-tight group-hover:text-primary transition-colors">Bộ ảnh Lookbook Bộ sưu tập Thu Đông 2024 (Generated)</h4>
+<!-- Progress Bar (Complete but in review) -->
+<div class="mb-4">
+<div class="flex justify-between text-[11px] font-medium text-on-surface-variant mb-1.5">
+<span>Tiến độ AI</span>
+<span>100%</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-full"></div>
+</div>
+</div>
+<!-- Meta info -->
+<div class="flex flex-col gap-2 mb-5">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">folder_shared</span>
+<span>Workspace: UrbanStyle</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">image</span>
+<span>12 hình ảnh</span>
+</div>
+</div>
+<!-- Footer: Agent & Status -->
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Image Gen AI</span>
+</div>
+<span class="px-2 py-1 bg-secondary-fixed text-on-secondary-container font-label-sm text-[11px] rounded-full">Cần duyệt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Hoàn thành (Done) -->
+<div class="w-[340px] shrink-0 flex flex-col max-h-full opacity-70 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between mb-4 px-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#10B981]"></span> <!-- Using a standard green for done state if not in config, but I should try to use config colors. Let's use outline for inactive/done look or a subtle color -->
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Hoàn thành</h3>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full text-[11px] font-medium">1</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2 pb-4 kanban-scroll">
+<!-- Card 5 -->
+<div class="bg-surface border border-outline-variant/50 rounded-xl p-6 cursor-pointer group bg-surface-container-lowest">
+<div class="flex justify-between items-start mb-3">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant text-[11px] font-semibold rounded uppercase tracking-wider">Spa</span>
+</div>
+<h4 class="font-headline-md text-[18px] font-semibold text-on-surface-variant mb-4 leading-tight">Chuỗi email marketing chăm sóc khách hàng VIP</h4>
+<!-- Meta info -->
+<div class="flex flex-col gap-2 mb-5">
+<div class="flex items-center gap-2 text-on-surface-variant/70 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">folder_shared</span>
+<span>Workspace: ZenSpa</span>
+</div>
+</div>
+<!-- Footer: Agent & Status -->
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-surface-variant/50">
+<div class="flex items-center gap-2 opacity-70">
+<div class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Copywriter AI</span>
+</div>
+<span class="px-2 py-1 bg-green-100 text-green-800 font-label-sm text-[11px] rounded-full">Đã xuất bản</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
