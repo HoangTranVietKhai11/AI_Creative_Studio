@@ -41,6 +41,7 @@ RUN adduser --system --uid 1001 worker
 
 COPY --from=builder --chown=worker:worker /app/apps/worker/dist ./dist
 COPY --from=builder --chown=worker:worker /app/node_modules ./node_modules
+COPY --from=builder --chown=worker:worker /app/packages ./packages
 COPY --from=builder --chown=worker:worker /app/prisma ./prisma
 
 RUN mkdir -p /app/uploads && chown -R worker:worker /app/uploads
