@@ -12,19 +12,19 @@ export class AdminController {
     private readonly prisma: PrismaService, // Need this to access DB directly
   ) {}
 
-  // 🚀 TEMP ROUTE: Tự động cấp quyền admin cho khaih3222@gmail.com
+  // 🚀 TEMP ROUTE: Tự động cấp quyền admin
   @Get('setup-first-admin')
-  async setupFirstAdmin() {
-    const email = 'khaih3222@gmail.com';
+  async setupFirstAdmin(@Query('email') queryEmail?: string) {
+    const email = queryEmail || 'hoangtranvietkhai@gmail.com';
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return { success: false, message: 'Bạn chưa tạo tài khoản. Hãy vào web đăng ký tài khoản với email khaih3222@gmail.com trước nhé!' };
+      return { success: false, message: `Bạn chưa tạo tài khoản. Hãy vào web đăng ký tài khoản với email ${email} trước nhé!` };
     }
     await this.prisma.user.update({
       where: { email },
       data: { role: 'ADMIN' }
     });
-    return { success: true, message: 'Thành công! Tài khoản của bạn đã được nâng cấp lên ADMIN.' };
+    return { success: true, message: `Thành công! Tài khoản ${email} đã được nâng cấp lên ADMIN.` };
   }
 
   @Get('stats')
