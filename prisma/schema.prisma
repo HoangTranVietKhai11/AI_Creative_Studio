@@ -24,6 +24,11 @@ enum UserRole {
   ADMIN
 }
 
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
 enum AuthProvider {
   EMAIL
   GOOGLE
@@ -83,26 +88,27 @@ enum MediaAnalysisStatus {
 // ──────────────────────────────────────────────
 
 model User {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email         String       @unique @db.VarChar(255)
-  passwordHash  String?      @map("password_hash") @db.VarChar(255)
-  name          String?      @db.VarChar(255)
-  avatarUrl     String?      @map("avatar_url") @db.Text
-  role          UserRole     @default(USER)
-  provider      AuthProvider @default(EMAIL)
-  providerId    String?      @map("provider_id") @db.VarChar(255)
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String       @unique @db.VarChar(255)
+  passwordHash String?      @map("password_hash") @db.VarChar(255)
+  name         String?      @db.VarChar(255)
+  avatarUrl    String?      @map("avatar_url") @db.Text
+  role         UserRole     @default(USER)
+  status       UserStatus   @default(ACTIVE)
+  provider     AuthProvider @default(EMAIL)
+  providerId   String?      @map("provider_id") @db.VarChar(255)
 
   // User-specific API key (encrypted) for OpenRouter
-  encryptedApiKey String?    @map("encrypted_api_key") @db.Text
+  encryptedApiKey String? @map("encrypted_api_key") @db.Text
 
   // AI preferences
-  preferredModel String?     @default("anthropic/claude-sonnet-4") @map("preferred_model") @db.VarChar(100)
+  preferredModel String? @default("anthropic/claude-sonnet-4") @map("preferred_model") @db.VarChar(100)
 
   // Refresh token for JWT rotation
-  refreshToken   String?     @map("refresh_token") @db.Text
+  refreshToken String? @map("refresh_token") @db.Text
 
-  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
   subscription  Subscription?
@@ -130,16 +136,16 @@ model Subscription {
   currentPeriodEnd     DateTime?          @map("current_period_end") @db.Timestamptz(6)
 
   // Usage tracking
-  messagesUsed         Int                @default(0) @map("messages_used")
-  messagesLimit        Int                @default(50) @map("messages_limit")
-  documentsUsed        Int                @default(0) @map("documents_used")
-  documentsLimit       Int                @default(5) @map("documents_limit")
+  messagesUsed   Int @default(0) @map("messages_used")
+  messagesLimit  Int @default(50) @map("messages_limit")
+  documentsUsed  Int @default(0) @map("documents_used")
+  documentsLimit Int @default(5) @map("documents_limit")
 
-  createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("subscriptions")
 }
@@ -149,18 +155,18 @@ model Subscription {
 // ──────────────────────────────────────────────
 
 model Project {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String   @map("user_id") @db.Uuid
-  name        String   @db.VarChar(255)
-  description String?  @db.Text
-  industry    String?  @db.VarChar(100)
-  niche       String?  @db.VarChar(100)
-  brandVoice  String?  @map("brand_voice") @db.Text
+  id             String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String  @map("user_id") @db.Uuid
+  name           String  @db.VarChar(255)
+  description    String? @db.Text
+  industry       String? @db.VarChar(100)
+  niche          String? @db.VarChar(100)
+  brandVoice     String? @map("brand_voice") @db.Text
   targetAudience String? @map("target_audience") @db.Text
-  metadata    Json?    @default("{}")
+  metadata       Json?   @default("{}")
 
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -175,12 +181,12 @@ model Project {
 // ──────────────────────────────────────────────
 
 model Conversation {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
-  projectId String?  @map("project_id") @db.Uuid
-  title     String   @default("New Conversation") @db.VarChar(255)
-  model     String?  @db.VarChar(100)
-  metadata  Json?    @default("{}")
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String  @map("user_id") @db.Uuid
+  projectId String? @map("project_id") @db.Uuid
+  title     String  @default("New Conversation") @db.VarChar(255)
+  model     String? @db.VarChar(100)
+  metadata  Json?   @default("{}")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -203,12 +209,12 @@ model Message {
   agentName      String? @map("agent_name") @db.VarChar(50)
 
   // Metadata for sources, search results, etc.
-  sources        Json?   @default("[]")
-  metadata       Json?   @default("{}")
+  sources  Json? @default("[]")
+  metadata Json? @default("{}")
 
   // Token usage tracking
-  promptTokens     Int?  @map("prompt_tokens")
-  completionTokens Int?  @map("completion_tokens")
+  promptTokens     Int? @map("prompt_tokens")
+  completionTokens Int? @map("completion_tokens")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
@@ -224,22 +230,22 @@ model Message {
 // ──────────────────────────────────────────────
 
 model Document {
-  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String?        @map("user_id") @db.Uuid
-  title       String         @db.VarChar(500)
-  type        DocumentType
-  status      DocumentStatus @default(PENDING)
-  filePath    String?        @map("file_path") @db.Text
-  sourceUrl   String?        @map("source_url") @db.Text
-  fileSize    Int?           @map("file_size")
-  mimeType    String?        @map("mime_type") @db.VarChar(100)
-  rawContent  String?        @map("raw_content") @db.Text
-  chunkCount  Int            @default(0) @map("chunk_count")
-  errorMsg    String?        @map("error_msg") @db.Text
-  metadata    Json?          @default("{}")
+  id         String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String?        @map("user_id") @db.Uuid
+  title      String         @db.VarChar(500)
+  type       DocumentType
+  status     DocumentStatus @default(PENDING)
+  filePath   String?        @map("file_path") @db.Text
+  sourceUrl  String?        @map("source_url") @db.Text
+  fileSize   Int?           @map("file_size")
+  mimeType   String?        @map("mime_type") @db.VarChar(100)
+  rawContent String?        @map("raw_content") @db.Text
+  chunkCount Int            @default(0) @map("chunk_count")
+  errorMsg   String?        @map("error_msg") @db.Text
+  metadata   Json?          @default("{}")
 
-  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
   user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -260,10 +266,10 @@ model Embedding {
   source      EmbeddingSource @default(UPLOAD)
   metadata    Json?           @default("{}")
 
-  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  document    Document?       @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  document Document? @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
   @@index([contentHash])
   @@index([documentId])
@@ -275,20 +281,20 @@ model Embedding {
 // ──────────────────────────────────────────────
 
 model SavedPrompt {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String   @map("user_id") @db.Uuid
-  title       String   @db.VarChar(255)
-  content     String   @db.Text
-  category    String?  @db.VarChar(100)
-  tags        String[] @default([])
-  isPublic    Boolean  @default(false) @map("is_public")
-  usageCount  Int      @default(0) @map("usage_count")
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  title      String   @db.VarChar(255)
+  content    String   @db.Text
+  category   String?  @db.VarChar(100)
+  tags       String[] @default([])
+  isPublic   Boolean  @default(false) @map("is_public")
+  usageCount Int      @default(0) @map("usage_count")
 
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([category])
@@ -347,11 +353,11 @@ model UploadedMedia {
   analysisResult Json?               @map("analysis_result")
   metadata       Json?               @default("{}")
 
-  createdAt      DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([type])
@@ -364,19 +370,34 @@ model UploadedMedia {
 // ──────────────────────────────────────────────
 
 model AgentConfig {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String   @unique @db.VarChar(100)
-  displayName String   @map("display_name") @db.VarChar(255)
-  description String?  @db.Text
+  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String  @unique @db.VarChar(100)
+  displayName  String  @map("display_name") @db.VarChar(255)
+  description  String? @db.Text
   systemPrompt String  @map("system_prompt") @db.Text
-  model       String?  @db.VarChar(100)
-  temperature Float?   @default(0.7)
-  maxTokens   Int?     @default(4096) @map("max_tokens")
-  tools       Json?    @default("[]")
-  isActive    Boolean  @default(true) @map("is_active")
+  model        String? @db.VarChar(100)
+  temperature  Float?  @default(0.7)
+  maxTokens    Int?    @default(4096) @map("max_tokens")
+  tools        Json?   @default("[]")
+  isActive     Boolean @default(true) @map("is_active")
 
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@map("agent_configs")
+}
+
+// ──────────────────────────────────────────────
+// SYSTEM CONFIGURATION (Global Settings)
+// ──────────────────────────────────────────────
+
+model SystemConfig {
+  key         String  @id @db.VarChar(100)
+  value       String  @db.Text
+  description String? @db.Text
+  isSecret    Boolean @default(false) @map("is_secret")
+
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("system_configs")
 }

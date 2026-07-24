@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Param, Query, UseGuards, Body } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Param, Query, UseGuards, Body, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards';
@@ -55,5 +55,76 @@ export class AdminController {
     @Body('role') role: 'USER' | 'ADMIN',
   ) {
     return this.adminService.updateUserRole(id, role);
+  }
+
+  @Put('users/:id/status')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async updateUserStatus(
+    @Param('id') id: string,
+    @Body('status') status: 'ACTIVE' | 'SUSPENDED',
+  ) {
+    return this.adminService.updateUserStatus(id, status);
+  }
+
+  @Delete('users/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async deleteUser(@Param('id') id: string) {
+    return this.adminService.deleteUser(id);
+  }
+
+  // ──────────────────────────────────────────────
+  // AGENTS
+  // ──────────────────────────────────────────────
+
+  @Get('agents')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async getAgents() {
+    return this.adminService.getAgents();
+  }
+
+  @Put('agents')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async createAgent(@Body() data: any) {
+    return this.adminService.createAgent(data);
+  }
+
+  @Put('agents/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async updateAgent(@Param('id') id: string, @Body() data: any) {
+    return this.adminService.updateAgent(id, data);
+  }
+
+  @Delete('agents/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async deleteAgent(@Param('id') id: string) {
+    return this.adminService.deleteAgent(id);
+  }
+
+  // ──────────────────────────────────────────────
+  // SYSTEM CONFIGS
+  // ──────────────────────────────────────────────
+
+  @Get('configs')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async getSystemConfigs() {
+    return this.adminService.getSystemConfigs();
+  }
+
+  @Put('configs/:key')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async updateSystemConfig(
+    @Param('key') key: string,
+    @Body('value') value: string,
+    @Body('isSecret') isSecret?: boolean,
+  ) {
+    return this.adminService.updateSystemConfig(key, value, isSecret);
   }
 }

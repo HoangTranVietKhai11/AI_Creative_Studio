@@ -89,6 +89,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
+    if (user.status === 'SUSPENDED') {
+      throw new UnauthorizedException('Account has been suspended');
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
@@ -135,6 +139,10 @@ export class AuthService {
       });
       this.logger.log(`New OAuth user registered: ${email} via ${provider}`);
     } else {
+      if (user.status === 'SUSPENDED') {
+        throw new UnauthorizedException('Account has been suspended');
+      }
+
       // Update provider info and avatar if changed
       await this.prisma.user.update({
         where: { id: user.id },
@@ -195,6 +203,7 @@ export class AuthService {
         email: true,
         name: true,
         role: true,
+        status: true,
         avatarUrl: true,
         preferredModel: true,
         provider: true,
@@ -203,6 +212,10 @@ export class AuthService {
 
     if (!user) {
       throw new UnauthorizedException('User not found');
+    }
+
+    if (user.status === 'SUSPENDED') {
+      throw new UnauthorizedException('Account has been suspended');
     }
 
     return user;

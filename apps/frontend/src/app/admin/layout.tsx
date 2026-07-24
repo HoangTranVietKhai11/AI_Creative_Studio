@@ -10,6 +10,8 @@ import { Menu, X, ArrowLeft } from 'lucide-react';
 const navItems = [
   { href: '/admin', label: 'Tổng quan', icon: 'dashboard' },
   { href: '/admin/users', label: 'Người dùng', icon: 'group' },
+  { href: '/admin/agents', label: 'Trợ lý AI', icon: 'smart_toy' },
+  { href: '/admin/settings', label: 'Cài đặt hệ thống', icon: 'settings' },
 ];
 
 export default function AdminLayout({

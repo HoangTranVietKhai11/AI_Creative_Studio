@@ -10,6 +10,7 @@ interface User {
   email: string;
   name: string | null;
   role: 'USER' | 'ADMIN';
+  status: 'ACTIVE' | 'SUSPENDED';
   provider: string;
   createdAt: string;
 }
@@ -58,6 +59,36 @@ export default function AdminUsersPage() {
       setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
     } catch (err: any) {
       alert(err.message || 'Lỗi khi cập nhật quyền');
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleStatusChange = async (userId: string, newStatus: 'ACTIVE' | 'SUSPENDED') => {
+    const action = newStatus === 'SUSPENDED' ? 'KHÓA' : 'MỞ KHÓA';
+    if (!confirm(`Bạn có chắc chắn muốn ${action} người dùng này?`)) return;
+    
+    setUpdatingId(userId);
+    try {
+      await api.put(`/api/admin/users/${userId}/status`, { status: newStatus });
+      setUsers(users.map(u => u.id === userId ? { ...u, status: newStatus } : u));
+    } catch (err: any) {
+      alert(err.message || 'Lỗi khi cập nhật trạng thái');
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm('CẢNH BÁO: Hành động này sẽ XÓA VĨNH VIỄN người dùng và toàn bộ dữ liệu của họ. Bạn có chắc chắn?')) return;
+    
+    setUpdatingId(userId);
+    try {
+      await api.delete(`/api/admin/users/${userId}`);
+      setUsers(users.filter(u => u.id !== userId));
+      setMeta(prev => prev ? { ...prev, total: prev.total - 1 } : null);
+    } catch (err: any) {
+      alert(err.message || 'Lỗi khi xóa người dùng');
     } finally {
       setUpdatingId(null);
     }
@@ -124,7 +155,14 @@ export default function AdminUsersPage() {
                             {u.name?.charAt(0) || u.email.charAt(0).toUpperCase()}
                           </div>
                           <div>
-                            <p className="font-label-md text-on-surface">{u.name || 'Người dùng'}</p>
+                            <p className="font-label-md text-on-surface">
+                              {u.name || 'Người dùng'}
+                              {u.status === 'SUSPENDED' && (
+                                <span className="ml-2 px-1.5 py-0.5 bg-error/10 text-error text-[10px] rounded uppercase font-bold tracking-wider">
+                                  Bị khóa
+                                </span>
+                              )}
+                            </p>
                             <p className="text-sm text-on-surface-variant">{u.email}</p>
                           </div>
                         </div>
@@ -149,17 +187,40 @@ export default function AdminUsersPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <button
-                          disabled={updatingId === u.id}
-                          onClick={() => handleRoleChange(u.id, u.role === 'ADMIN' ? 'USER' : 'ADMIN')}
-                          className={`text-sm font-label-sm px-3 py-1.5 rounded-lg border transition-colors ${
-                            u.role === 'ADMIN' 
-                              ? 'border-error/20 text-error hover:bg-error/10' 
-                              : 'border-outline-variant text-on-surface hover:bg-surface-container-low'
-                          }`}
-                        >
-                          {updatingId === u.id ? 'Đang lưu...' : (u.role === 'ADMIN' ? 'Hạ quyền' : 'Lên Admin')}
-                        </button>
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            disabled={updatingId === u.id}
+                            onClick={() => handleRoleChange(u.id, u.role === 'ADMIN' ? 'USER' : 'ADMIN')}
+                            className={`text-sm font-label-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                              u.role === 'ADMIN' 
+                                ? 'border-primary/20 text-primary hover:bg-primary/10' 
+                                : 'border-outline-variant text-on-surface hover:bg-surface-container-low'
+                            }`}
+                          >
+                            {updatingId === u.id ? '...' : (u.role === 'ADMIN' ? 'Hạ quyền' : 'Lên Admin')}
+                          </button>
+
+                          <button
+                            disabled={updatingId === u.id}
+                            onClick={() => handleStatusChange(u.id, u.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE')}
+                            className={`text-sm font-label-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                              u.status === 'ACTIVE' 
+                                ? 'border-outline-variant text-on-surface hover:bg-surface-container-low'
+                                : 'border-error/20 text-error hover:bg-error/10'
+                            }`}
+                          >
+                            {updatingId === u.id ? '...' : (u.status === 'ACTIVE' ? 'Khóa' : 'Mở khóa')}
+                          </button>
+
+                          <button
+                            disabled={updatingId === u.id}
+                            onClick={() => handleDeleteUser(u.id)}
+                            className="text-sm font-label-sm px-3 py-1.5 rounded-lg border border-error/20 text-error hover:bg-error text-white hover:text-white transition-colors bg-error/10"
+                            title="Xóa vĩnh viễn"
+                          >
+                            <span className="material-symbols-outlined text-[18px] block">delete</span>
+                          </button>
+                        </div>
                       </td>
                     </motion.tr>
                   ))
