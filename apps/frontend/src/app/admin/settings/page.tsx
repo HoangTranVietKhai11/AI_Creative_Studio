@@ -13,21 +13,17 @@ interface SystemConfig {
 
 export default function AdminSettingsPage() {
   const [configs, setConfigs] = useState<SystemConfig[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const [editKey, setEditKey] = useState<string | null>(null);
   const [editValue, setEditValue] = useState<string>('');
 
   const fetchConfigs = async () => {
-    setIsLoading(true);
     try {
       const res = await api.get<SystemConfig[]>('/api/admin/configs');
-      setConfigs(res);
+      setConfigs((res as any).data ?? res);
     } catch (err: any) {
       setError(err.message || 'Lỗi khi tải cấu hình hệ thống');
-    } finally {
-      setIsLoading(false);
     }
   };
 
