@@ -347,12 +347,18 @@ export default function AdminUsersPage() {
       {/* CREATE USER MODAL */}
       <AnimatePresence>
         {isCreateModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <motion.div 
+            key="create-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          >
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-surface w-full max-w-md rounded-2xl border border-outline-variant shadow-xl overflow-hidden"
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              className="bg-surface w-full max-w-md rounded-2xl border border-outline-variant shadow-xl overflow-hidden z-[101]"
             >
               <div className="flex items-center justify-between p-4 md:p-6 border-b border-outline-variant">
                 <h2 className="text-xl font-bold text-on-surface">Thêm thành viên mới</h2>
@@ -438,19 +444,25 @@ export default function AdminUsersPage() {
                 </div>
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
       {/* CHANGE PLAN MODAL */}
       <AnimatePresence>
         {isPlanModalOpen && selectedUser && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <motion.div 
+            key="plan-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          >
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-surface w-full max-w-sm rounded-2xl border border-outline-variant shadow-xl overflow-hidden"
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              className="bg-surface w-full max-w-sm rounded-2xl border border-outline-variant shadow-xl overflow-hidden z-[101]"
             >
               <div className="p-4 md:p-6 border-b border-outline-variant">
                 <h2 className="text-xl font-bold text-on-surface">Đổi gói cước</h2>
@@ -498,7 +510,7 @@ export default function AdminUsersPage() {
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
