@@ -2,7 +2,7 @@ import { Controller, Get, Put, Param, Query, UseGuards, Body } from '@nestjs/com
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards';
-import { Roles } from '../../common/decorators';
+import { Roles, Public } from '../../common/decorators';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Controller('admin')
@@ -13,6 +13,7 @@ export class AdminController {
   ) {}
 
   // 🚀 TEMP ROUTE: Tự động cấp quyền admin
+  @Public()
   @Get('setup-first-admin')
   async setupFirstAdmin(@Query('email') queryEmail?: string) {
     const email = queryEmail || 'hoangtranvietkhai@gmail.com';
