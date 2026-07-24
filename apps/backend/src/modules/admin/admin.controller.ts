@@ -74,6 +74,23 @@ export class AdminController {
     return this.adminService.deleteUser(id);
   }
 
+  @Post('users')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async createUser(@Body() data: any) {
+    return this.adminService.createUser(data);
+  }
+
+  @Put('users/:id/subscription')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async updateUserSubscription(
+    @Param('id') id: string,
+    @Body('plan') plan: 'FREE' | 'PRO' | 'AGENCY',
+  ) {
+    return this.adminService.updateUserSubscription(id, plan);
+  }
+
   // ──────────────────────────────────────────────
   // AGENTS
   // ──────────────────────────────────────────────
