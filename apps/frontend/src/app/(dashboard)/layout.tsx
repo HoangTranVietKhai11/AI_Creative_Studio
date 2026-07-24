@@ -219,6 +219,16 @@ export default function DashboardLayout({
                       <p className="font-label-md text-on-background truncate">{user?.name || 'User'}</p>
                       <p className="text-xs text-on-surface-variant truncate">{user?.email}</p>
                     </div>
+                    {user?.role === 'ADMIN' && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-primary font-medium hover:bg-surface-container-low transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+                        Trang Quản Trị
+                      </Link>
+                    )}
                     <Link
                       href="/settings"
                       onClick={() => setShowUserMenu(false)}
