@@ -38,7 +38,9 @@ class ApiClient {
     });
     let response = await request();
 
-    if (response.status === 401) {
+    const isAuthRoute = path.startsWith('/api/auth/login') || path.startsWith('/api/auth/register');
+
+    if (response.status === 401 && !isAuthRoute) {
       const refreshed = await this.refreshToken();
       if (refreshed) {
         response = await request();
