@@ -18,6 +18,7 @@ import { SearchModule } from './modules/search/search.module';
 import { MediaModule } from './modules/media/media.module';
 import { BillingModule } from './modules/billing/billing.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { AdminModule } from './modules/admin/admin.module';
     BillingModule,
     AdminModule,
   ],
+  controllers: [AppController],
   providers: [
     // Global rate limiting guard
     {
