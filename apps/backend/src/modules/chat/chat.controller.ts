@@ -115,6 +115,7 @@ export class ChatController {
       res.write('data: [DONE]\n\n');
       res.end();
     } catch (error) {
+      console.error('Chat stream error:', error);
       const errorData = JSON.stringify({
         type: 'error',
         content: 'An error occurred while processing your request.',
