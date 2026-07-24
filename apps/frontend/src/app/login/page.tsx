@@ -13,7 +13,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuthStore();
   const router = useRouter();
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  const isProd = process.env.NODE_ENV === 'production';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || (isProd ? 'https://ai-creative-studio-f3zg.onrender.com' : 'http://localhost:4000');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

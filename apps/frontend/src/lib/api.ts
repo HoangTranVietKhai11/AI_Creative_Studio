@@ -2,7 +2,8 @@
 // ContentPilot AI — API Client
 // ============================================
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const isProd = process.env.NODE_ENV === 'production';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (isProd ? 'https://ai-creative-studio-f3zg.onrender.com' : 'http://localhost:4000');
 
 class ApiClient {
   private baseUrl: string;

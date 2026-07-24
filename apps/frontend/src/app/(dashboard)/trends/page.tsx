@@ -28,19 +28,24 @@ export default function TrendsPage() {
     setResult('');
     try {
       let token = await api.getValidToken();
-      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/chat/stream`, {
+      const isProd = process.env.NODE_ENV === 'production';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || (isProd ? 'https://ai-creative-studio-f3zg.onrender.com' : 'http://localhost:4000');
+      const prompt = `Phân tích các xu hướng ${topic} đang nổi bật nhất hiện nay. Liệt kê top 5 xu hướng với mô tả chi tiết, cơ hội và cách áp dụng thực tế cho content creator.`;
+
+      let res = await fetch(`${apiUrl}/api/chat/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
-          message: `Phân tích các xu hướng ${topic} đang nổi bật nhất hiện nay. Liệt kê top 5 xu hướng với mô tả chi tiết, cơ hội và cách áp dụng thực tế cho content creator.`,
+          message: prompt,
           model: 'openai/gpt-4o-mini',
         }),
       });
+
       if (res.status === 401) {
         const refreshed = await api.refreshTokenIfNeeded();
         if (refreshed) {
           token = localStorage.getItem('accessToken');
-          res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/chat/stream`, {
+          res = await fetch(`${apiUrl}/api/chat/stream`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({

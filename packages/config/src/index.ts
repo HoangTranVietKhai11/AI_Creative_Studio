@@ -8,8 +8,8 @@ export const envSchema = z.object({
   // Application
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   APP_NAME: z.string().default('ContentPilot AI'),
-  APP_URL: z.string().url().default('http://localhost:3000'),
-  API_URL: z.string().url().default('http://localhost:4000'),
+  APP_URL: z.string().url().default(process.env.NODE_ENV === 'production' ? 'https://ai-creative-studio-frontend.vercel.app' : 'http://localhost:3000'),
+  API_URL: z.string().url().default(process.env.NODE_ENV === 'production' ? 'https://ai-creative-studio-f3zg.onrender.com' : 'http://localhost:4000'),
   API_PORT: z.coerce.number().default(4000),
 
   // Database
