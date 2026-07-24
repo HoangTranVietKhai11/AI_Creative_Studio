@@ -17,6 +17,7 @@ import { KnowledgeModule } from './modules/knowledge/knowledge.module';
 import { SearchModule } from './modules/search/search.module';
 import { MediaModule } from './modules/media/media.module';
 import { BillingModule } from './modules/billing/billing.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { BillingModule } from './modules/billing/billing.module';
     SearchModule,
     MediaModule,
     BillingModule,
+    AdminModule,
   ],
   providers: [
     // Global rate limiting guard
